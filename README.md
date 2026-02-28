@@ -1,8 +1,10 @@
 team name- Hackspire
+
 project name- Karshaka mitra
-teem membars- om kumar
-              aditya tarapur
-              khushi kumar
+
+teem membars- om kumar,
+              aditya tarapur,
+              khushi kumar,
               yash shinde
 
 
