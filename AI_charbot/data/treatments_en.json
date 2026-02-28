@@ -1,0 +1,740 @@
+{
+  "Apple___Apple_scab": {
+    "cause_icon": "water_drop",
+    "cause_title": "Cool & Wet Weather",
+    "cause_detail": "The fungus Venturia inaequalis thrives in cool, moist spring conditions, spreading spores through rain splash.",
+    "disease_type": "Fungal",
+    "onset": "Seasonal",
+    "severity": "Medium",
+    "severity_percent": 55,
+    "crop_loss": "~25% Yield",
+    "prevention": [
+      "Prune trees to improve air circulation",
+      "Rake and destroy fallen leaves each autumn",
+      "Plant scab-resistant apple varieties"
+    ],
+    "treatment_steps": [
+      { "title": "Remove Infected Leaves", "detail": "Pick off and destroy all visibly scabbed leaves and fruit to reduce spore load." },
+      { "title": "Apply Fungicide", "detail": "Spray captan or myclobutanil every 7–10 days during wet spring weather." },
+      { "title": "Monitor Regularly", "detail": "Check new growth weekly and reapply fungicide after heavy rain." }
+    ]
+  },
+  "Apple___Black_rot": {
+    "cause_icon": "bug_report",
+    "cause_title": "Fungal Wood Infection",
+    "cause_detail": "Botryosphaeria obtusa enters through wounds and dead wood, spreading to fruit and leaves in warm, humid conditions.",
+    "disease_type": "Fungal",
+    "onset": "Chronic",
+    "severity": "High",
+    "severity_percent": 70,
+    "crop_loss": "~50% Yield",
+    "prevention": [
+      "Prune out all dead and diseased wood",
+      "Remove mummified fruit from trees and ground",
+      "Avoid wounding the bark during farm work"
+    ],
+    "treatment_steps": [
+      { "title": "Prune Infected Wood", "detail": "Cut out all cankers and dead branches, cutting 15cm below visible infection." },
+      { "title": "Remove Mummified Fruit", "detail": "Collect and destroy all shrivelled fruit hanging on the tree — they harbour spores." },
+      { "title": "Apply Fungicide", "detail": "Spray captan or thiophanate-methyl from pink bud stage through summer." }
+    ]
+  },
+  "Apple___Cedar_apple_rust": {
+    "cause_icon": "forest",
+    "cause_title": "Two-Host Fungal Cycle",
+    "cause_detail": "The fungus Gymnosporangium requires both apple and nearby cedar/juniper trees to complete its life cycle. Spores travel on spring winds.",
+    "disease_type": "Fungal",
+    "onset": "Seasonal",
+    "severity": "Medium",
+    "severity_percent": 50,
+    "crop_loss": "~20% Yield",
+    "prevention": [
+      "Remove cedar and juniper trees within 1km if possible",
+      "Plant rust-resistant apple varieties",
+      "Prune orange galls from cedar trees in winter"
+    ],
+    "treatment_steps": [
+      { "title": "Apply Preventive Fungicide", "detail": "Spray myclobutanil or mancozeb starting at pink bud stage, before orange spores appear." },
+      { "title": "Repeat Applications", "detail": "Continue spraying every 7–10 days through petal fall, especially after rain." },
+      { "title": "Remove Galls from Cedar", "detail": "Cut off any orange, jelly-like galls from nearby cedar trees each spring." }
+    ]
+  },
+  "Apple___healthy": {
+    "cause_icon": "check_circle",
+    "cause_title": "Plant is Healthy",
+    "cause_detail": "No disease detected. Your apple tree shows no signs of infection. Continue your current care routine.",
+    "disease_type": "Healthy",
+    "onset": "N/A",
+    "severity": "None",
+    "severity_percent": 5,
+    "crop_loss": "No Risk",
+    "prevention": [
+      "Maintain balanced fertilization each season",
+      "Water at the base — avoid wetting leaves",
+      "Inspect trees monthly for early warning signs"
+    ],
+    "treatment_steps": [
+      { "title": "No Treatment Needed", "detail": "Your crop appears healthy. Keep monitoring weekly for any changes." },
+      { "title": "Routine Maintenance", "detail": "Continue regular pruning, feeding, and watering to keep the plant strong." }
+    ]
+  },
+  "Blueberry___healthy": {
+    "cause_icon": "check_circle",
+    "cause_title": "Plant is Healthy",
+    "cause_detail": "No disease detected. Your blueberry plant is in good condition.",
+    "disease_type": "Healthy",
+    "onset": "N/A",
+    "severity": "None",
+    "severity_percent": 5,
+    "crop_loss": "No Risk",
+    "prevention": [
+      "Maintain soil pH between 4.5 and 5.5",
+      "Apply mulch to retain moisture and suppress weeds",
+      "Prune old canes each year to encourage new growth"
+    ],
+    "treatment_steps": [
+      { "title": "No Treatment Needed", "detail": "Your crop appears healthy. Keep monitoring weekly for any changes." },
+      { "title": "Routine Maintenance", "detail": "Ensure consistent moisture and acidic soil conditions." }
+    ]
+  },
+  "Cherry_(including_sour)___Powdery_mildew": {
+    "cause_icon": "air",
+    "cause_title": "Dry & Humid Air",
+    "cause_detail": "The fungus Podosphaera clandestina spreads through airborne spores, thriving when days are warm and nights are cool and humid.",
+    "disease_type": "Fungal",
+    "onset": "Seasonal",
+    "severity": "Medium",
+    "severity_percent": 50,
+    "crop_loss": "~30% Yield",
+    "prevention": [
+      "Space plants well to improve airflow",
+      "Avoid excess nitrogen fertilizer",
+      "Plant powdery mildew-resistant cherry varieties"
+    ],
+    "treatment_steps": [
+      { "title": "Remove Infected Growth", "detail": "Prune off shoots showing white powdery coating and dispose of them away from the farm." },
+      { "title": "Apply Sulfur Spray", "detail": "Spray sulfur or potassium bicarbonate solution every 7 days until symptoms disappear." },
+      { "title": "Improve Air Circulation", "detail": "Thin dense canopy areas so wind can pass through and dry leaf surfaces faster." }
+    ]
+  },
+  "Cherry_(including_sour)___healthy": {
+    "cause_icon": "check_circle",
+    "cause_title": "Plant is Healthy",
+    "cause_detail": "No disease detected. Your cherry tree is thriving.",
+    "disease_type": "Healthy",
+    "onset": "N/A",
+    "severity": "None",
+    "severity_percent": 5,
+    "crop_loss": "No Risk",
+    "prevention": [
+      "Prune for open canopy and sunlight penetration",
+      "Water consistently at the base of the tree",
+      "Check for pest damage monthly"
+    ],
+    "treatment_steps": [
+      { "title": "No Treatment Needed", "detail": "Your crop appears healthy. Keep monitoring weekly for any changes." }
+    ]
+  },
+  "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot": {
+    "cause_icon": "humidity_percentage",
+    "cause_title": "Warm & Humid Conditions",
+    "cause_detail": "The fungus Cercospora zeae-maydis survives in crop residue and spreads rapidly during warm nights with high humidity and heavy dew.",
+    "disease_type": "Fungal",
+    "onset": "Acute",
+    "severity": "High",
+    "severity_percent": 72,
+    "crop_loss": "~35% Yield",
+    "prevention": [
+      "Rotate crops — avoid continuous maize planting",
+      "Plant resistant hybrid varieties",
+      "Till soil after harvest to bury infected residue"
+    ],
+    "treatment_steps": [
+      { "title": "Scout Fields Early", "detail": "Check lower leaves at knee-height stage. Act before lesions reach upper canopy." },
+      { "title": "Apply Fungicide", "detail": "Spray strobilurin or triazole fungicides at first sign of lesions, before tasselling." },
+      { "title": "Manage Crop Residue", "detail": "After harvest, plough under or burn infected stalks and leaves to break the disease cycle." }
+    ]
+  },
+  "Corn_(maize)___Common_rust_": {
+    "cause_icon": "grain",
+    "cause_title": "Wind-Blown Spores",
+    "cause_detail": "Puccinia sorghi spores travel long distances on wind. Infection is favoured by cool temperatures (16–23°C) and high humidity.",
+    "disease_type": "Fungal",
+    "onset": "Acute",
+    "severity": "Medium",
+    "severity_percent": 55,
+    "crop_loss": "~20% Yield",
+    "prevention": [
+      "Plant early-maturing rust-resistant hybrids",
+      "Avoid late planting when spore pressure is high",
+      "Monitor fields weekly during cool, wet periods"
+    ],
+    "treatment_steps": [
+      { "title": "Assess Severity", "detail": "Light rust on lower leaves rarely needs treatment. Act if pustules reach the ear leaves." },
+      { "title": "Apply Fungicide", "detail": "Spray propiconazole or azoxystrobin at early rust appearance, especially for sweet corn." },
+      { "title": "Harvest Promptly", "detail": "If infection is severe and crop is near maturity, harvest early to minimise losses." }
+    ]
+  },
+  "Corn_(maize)___Northern_Leaf_Blight": {
+    "cause_icon": "device_thermostat",
+    "cause_title": "Cool Wet Weather",
+    "cause_detail": "Exserohilum turcicum infects through stomata during cool (18–27°C), wet periods. Long, grey-green cigar-shaped lesions are the key symptom.",
+    "disease_type": "Fungal",
+    "onset": "Acute",
+    "severity": "High",
+    "severity_percent": 68,
+    "crop_loss": "~40% Yield",
+    "prevention": [
+      "Use resistant hybrids with Ht genes",
+      "Practise crop rotation with non-host crops",
+      "Manage crop residue by deep ploughing after harvest"
+    ],
+    "treatment_steps": [
+      { "title": "Identify Early", "detail": "Look for elliptical greyish lesions on lower leaves. Early detection is critical." },
+      { "title": "Apply Fungicide", "detail": "Spray mancozeb or azoxystrobin at tasselling if disease pressure is high." },
+      { "title": "Residue Management", "detail": "Plough crop debris deep into the soil after harvest to reduce inoculum for next season." }
+    ]
+  },
+  "Corn_(maize)___healthy": {
+    "cause_icon": "check_circle",
+    "cause_title": "Plant is Healthy",
+    "cause_detail": "No disease detected. Your maize crop looks strong and healthy.",
+    "disease_type": "Healthy",
+    "onset": "N/A",
+    "severity": "None",
+    "severity_percent": 5,
+    "crop_loss": "No Risk",
+    "prevention": [
+      "Maintain balanced NPK fertilization",
+      "Ensure adequate drainage in the field",
+      "Scout for pests and disease every 2 weeks"
+    ],
+    "treatment_steps": [
+      { "title": "No Treatment Needed", "detail": "Your crop appears healthy. Keep monitoring weekly for any changes." }
+    ]
+  },
+  "Grape___Black_rot": {
+    "cause_icon": "dark_mode",
+    "cause_title": "Wet Spring Weather",
+    "cause_detail": "Guignardia bidwellii overwinters in mummified berries and infected canes. Spores release during rainy spring periods, infecting young tissue.",
+    "disease_type": "Fungal",
+    "onset": "Seasonal",
+    "severity": "High",
+    "severity_percent": 80,
+    "crop_loss": "~60% Yield",
+    "prevention": [
+      "Remove all mummified berries from vines and ground",
+      "Prune vines for open canopy and good airflow",
+      "Apply fungicide protectively from bud break"
+    ],
+    "treatment_steps": [
+      { "title": "Remove Mummies", "detail": "Collect and destroy all dried, shrivelled berries — they are the primary source of infection." },
+      { "title": "Apply Fungicide at Bud Break", "detail": "Begin spraying myclobutanil or captan at early bud break. Repeat every 10 days until veraison." },
+      { "title": "Post-Harvest Sanitation", "detail": "After harvest, rake and dispose of all fallen leaves and fruit to reduce overwintering spores." }
+    ]
+  },
+  "Grape___Esca_(Black_Measles)": {
+    "cause_icon": "account_tree",
+    "cause_title": "Trunk Fungal Complex",
+    "cause_detail": "A complex of wood-rotting fungi (Phaeomoniella, Phaeoacremonium) colonise the vine's permanent wood over many years, blocking water flow.",
+    "disease_type": "Fungal",
+    "onset": "Chronic",
+    "severity": "High",
+    "severity_percent": 85,
+    "crop_loss": "~70% Yield",
+    "prevention": [
+      "Make clean pruning cuts and seal large wounds immediately",
+      "Prune during dry weather to reduce infection risk",
+      "Remove and burn severely infected vines promptly"
+    ],
+    "treatment_steps": [
+      { "title": "Prune Out Infected Wood", "detail": "Cut back to healthy white wood, well below any brown streaking or discolouration." },
+      { "title": "Protect Pruning Wounds", "detail": "Apply wound sealant paste (containing Trichoderma) to all cuts larger than 1cm immediately after pruning." },
+      { "title": "Remove Dying Vines", "detail": "Vines showing apoplexy (sudden wilting) should be removed and burned to prevent spread." }
+    ]
+  },
+  "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)": {
+    "cause_icon": "water",
+    "cause_title": "Overhead Moisture",
+    "cause_detail": "The fungus Isariopsis clavispora thrives where leaves stay wet. Dense canopies and overhead irrigation are the main risk factors.",
+    "disease_type": "Fungal",
+    "onset": "Acute",
+    "severity": "Medium",
+    "severity_percent": 45,
+    "crop_loss": "~15% Yield",
+    "prevention": [
+      "Avoid overhead irrigation — use drip systems",
+      "Maintain open canopy by leaf thinning",
+      "Apply fungicide protectively during wet periods"
+    ],
+    "treatment_steps": [
+      { "title": "Improve Canopy Airflow", "detail": "Remove leaves around grape clusters to allow faster drying after rain or dew." },
+      { "title": "Apply Fungicide", "detail": "Spray mancozeb or copper-based fungicide at first signs of angular leaf spots." },
+      { "title": "Switch to Drip Irrigation", "detail": "Replace overhead sprinklers with drip lines to keep foliage dry." }
+    ]
+  },
+  "Grape___healthy": {
+    "cause_icon": "check_circle",
+    "cause_title": "Plant is Healthy",
+    "cause_detail": "No disease detected. Your grapevine is in excellent condition.",
+    "disease_type": "Healthy",
+    "onset": "N/A",
+    "severity": "None",
+    "severity_percent": 5,
+    "crop_loss": "No Risk",
+    "prevention": [
+      "Train vines on trellis for maximum airflow",
+      "Monitor soil moisture — avoid waterlogging",
+      "Inspect for mealybugs and leafhoppers monthly"
+    ],
+    "treatment_steps": [
+      { "title": "No Treatment Needed", "detail": "Your crop appears healthy. Keep monitoring weekly for any changes." }
+    ]
+  },
+  "Orange___Haunglongbing_(Citrus_greening)": {
+    "cause_icon": "pest_control",
+    "cause_title": "Psyllid-Spread Bacteria",
+    "cause_detail": "The bacteria Candidatus Liberibacter asiaticus is injected into the tree by the Asian citrus psyllid insect as it feeds. There is currently no cure.",
+    "disease_type": "Bacterial",
+    "onset": "Chronic",
+    "severity": "High",
+    "severity_percent": 95,
+    "crop_loss": "~100% Yield",
+    "prevention": [
+      "Use only certified disease-free nursery trees",
+      "Control Asian citrus psyllid with insecticides",
+      "Remove and burn any infected trees immediately"
+    ],
+    "treatment_steps": [
+      { "title": "Remove Infected Trees", "detail": "There is no cure. Remove and burn all infected trees immediately to protect neighbouring citrus." },
+      { "title": "Control the Psyllid Vector", "detail": "Spray imidacloprid or dimethoate on remaining healthy trees to kill psyllid insects before they spread the bacteria." },
+      { "title": "Replant with Resistant Stock", "detail": "Source certified greening-free seedlings from a licensed nursery for replanting." }
+    ]
+  },
+  "Peach___Bacterial_spot": {
+    "cause_icon": "thunderstorm",
+    "cause_title": "Wind-Driven Rain",
+    "cause_detail": "Xanthomonas arboricola bacteria spread explosively during warm, rainy and windy weather, entering leaves and fruit through stomata and wounds.",
+    "disease_type": "Bacterial",
+    "onset": "Acute",
+    "severity": "High",
+    "severity_percent": 65,
+    "crop_loss": "~45% Yield",
+    "prevention": [
+      "Plant resistant peach varieties",
+      "Install windbreaks to reduce wind-driven rain",
+      "Avoid overhead irrigation — use drip systems"
+    ],
+    "treatment_steps": [
+      { "title": "Apply Copper Spray", "detail": "Spray copper hydroxide or copper oxychloride at petal fall and every 10 days during wet weather." },
+      { "title": "Prune Infected Shoots", "detail": "Remove and destroy twigs showing water-soaked lesions or cankers during dry weather." },
+      { "title": "Avoid Nitrogen Excess", "detail": "Reduce nitrogen fertilizer — lush, soft growth is far more susceptible to infection." }
+    ]
+  },
+  "Peach___healthy": {
+    "cause_icon": "check_circle",
+    "cause_title": "Plant is Healthy",
+    "cause_detail": "No disease detected. Your peach tree is in good health.",
+    "disease_type": "Healthy",
+    "onset": "N/A",
+    "severity": "None",
+    "severity_percent": 5,
+    "crop_loss": "No Risk",
+    "prevention": [
+      "Prune annually for open vase shape and airflow",
+      "Fertilize appropriately — avoid excess nitrogen",
+      "Check for borers and aphids each spring"
+    ],
+    "treatment_steps": [
+      { "title": "No Treatment Needed", "detail": "Your crop appears healthy. Keep monitoring weekly for any changes." }
+    ]
+  },
+  "Pepper,_bell___Bacterial_spot": {
+    "cause_icon": "thunderstorm",
+    "cause_title": "Rain & Wind Spread",
+    "cause_detail": "Xanthomonas campestris bacteria are splashed between plants by rain and spread on wind. Infection enters through leaf pores and tiny wounds.",
+    "disease_type": "Bacterial",
+    "onset": "Acute",
+    "severity": "High",
+    "severity_percent": 68,
+    "crop_loss": "~40% Yield",
+    "prevention": [
+      "Use certified disease-free seeds and transplants",
+      "Rotate crops — do not plant peppers in the same spot 2 years running",
+      "Switch to drip irrigation to keep foliage dry"
+    ],
+    "treatment_steps": [
+      { "title": "Apply Copper Bactericide", "detail": "Spray copper hydroxide every 5–7 days during warm, wet weather from transplanting onwards." },
+      { "title": "Remove Infected Plants", "detail": "Pull out and destroy plants that are heavily infected to prevent spread to healthy ones." },
+      { "title": "Sanitise Tools", "detail": "Dip knives and scissors in 10% bleach solution between plants to avoid spreading bacteria by contact." }
+    ]
+  },
+  "Pepper,_bell___healthy": {
+    "cause_icon": "check_circle",
+    "cause_title": "Plant is Healthy",
+    "cause_detail": "No disease detected. Your bell pepper plant is thriving.",
+    "disease_type": "Healthy",
+    "onset": "N/A",
+    "severity": "None",
+    "severity_percent": 5,
+    "crop_loss": "No Risk",
+    "prevention": [
+      "Ensure full sun — at least 6 hours per day",
+      "Water consistently at the base, not on leaves",
+      "Stake plants to prevent stem damage from wind"
+    ],
+    "treatment_steps": [
+      { "title": "No Treatment Needed", "detail": "Your crop appears healthy. Keep monitoring weekly for any changes." }
+    ]
+  },
+  "Potato___Early_blight": {
+    "cause_icon": "humidity_percentage",
+    "cause_title": "Warm Humid Conditions",
+    "cause_detail": "The fungus Alternaria solani survives in soil and infected debris. It thrives when temperatures are 24–29°C with high humidity and frequent rain.",
+    "disease_type": "Fungal",
+    "onset": "Acute",
+    "severity": "High",
+    "severity_percent": 72,
+    "crop_loss": "~35% Yield",
+    "prevention": [
+      "Rotate crops — avoid potato in the same field 2 years in a row",
+      "Avoid overhead watering — use drip irrigation",
+      "Space plants adequately for good air circulation"
+    ],
+    "treatment_steps": [
+      { "title": "Remove Infected Lower Leaves", "detail": "Pinch off leaves showing brown target-ring spots and dispose of them away from the field." },
+      { "title": "Apply Fungicide", "detail": "Spray copper-based fungicide or Neem oil every 7–10 days, especially after rain." },
+      { "title": "Improve Drainage", "detail": "Ensure the field drains well after rain — waterlogged roots increase overall disease vulnerability." }
+    ]
+  },
+  "Potato___Late_blight": {
+    "cause_icon": "storm",
+    "cause_title": "Cool Wet Weather",
+    "cause_detail": "Phytophthora infestans (a water mould) spreads through the air in cool (10–20°C), wet conditions and can destroy an entire field within days.",
+    "disease_type": "Fungal",
+    "onset": "Acute",
+    "severity": "High",
+    "severity_percent": 90,
+    "crop_loss": "~80% Yield",
+    "prevention": [
+      "Plant only certified disease-free seed potatoes",
+      "Use late-blight resistant varieties",
+      "Hill soil over tubers to prevent spore contact"
+    ],
+    "treatment_steps": [
+      { "title": "Destroy Infected Plants Immediately", "detail": "Do not compost. Remove infected plants in sealed bags and burn or bury them far from the field." },
+      { "title": "Apply Fungicide Preventively", "detail": "Spray chlorothalonil or mancozeb before symptoms appear during wet, cool weather forecasts." },
+      { "title": "Remove Infected Tubers", "detail": "At harvest, remove and discard all diseased tubers. Do not store or replant them." }
+    ]
+  },
+  "Potato___healthy": {
+    "cause_icon": "check_circle",
+    "cause_title": "Plant is Healthy",
+    "cause_detail": "No disease detected. Your potato crop is growing well.",
+    "disease_type": "Healthy",
+    "onset": "N/A",
+    "severity": "None",
+    "severity_percent": 5,
+    "crop_loss": "No Risk",
+    "prevention": [
+      "Hill soil around plants as they grow",
+      "Ensure good drainage — avoid waterlogged fields",
+      "Monitor for Colorado beetle and aphids weekly"
+    ],
+    "treatment_steps": [
+      { "title": "No Treatment Needed", "detail": "Your crop appears healthy. Keep monitoring weekly for any changes." }
+    ]
+  },
+  "Raspberry___healthy": {
+    "cause_icon": "check_circle",
+    "cause_title": "Plant is Healthy",
+    "cause_detail": "No disease detected. Your raspberry canes are in good health.",
+    "disease_type": "Healthy",
+    "onset": "N/A",
+    "severity": "None",
+    "severity_percent": 5,
+    "crop_loss": "No Risk",
+    "prevention": [
+      "Remove old fruited canes after harvest each year",
+      "Maintain soil pH between 5.5 and 6.5",
+      "Ensure good drainage — raspberries dislike wet roots"
+    ],
+    "treatment_steps": [
+      { "title": "No Treatment Needed", "detail": "Your crop appears healthy. Keep monitoring weekly for any changes." }
+    ]
+  },
+  "Soybean___healthy": {
+    "cause_icon": "check_circle",
+    "cause_title": "Plant is Healthy",
+    "cause_detail": "No disease detected. Your soybean crop is in excellent condition.",
+    "disease_type": "Healthy",
+    "onset": "N/A",
+    "severity": "None",
+    "severity_percent": 5,
+    "crop_loss": "No Risk",
+    "prevention": [
+      "Practise crop rotation with cereal crops",
+      "Plant at the correct depth and spacing for the variety",
+      "Scout for soybean aphid and stink bugs every 2 weeks"
+    ],
+    "treatment_steps": [
+      { "title": "No Treatment Needed", "detail": "Your crop appears healthy. Keep monitoring weekly for any changes." }
+    ]
+  },
+  "Squash___Powdery_mildew": {
+    "cause_icon": "air",
+    "cause_title": "Warm Dry Days + Humid Nights",
+    "cause_detail": "The fungus Podosphaera xanthii thrives when days are warm and dry but nights are cool and humid. Unlike most fungi, it does NOT need wet leaves to infect.",
+    "disease_type": "Fungal",
+    "onset": "Acute",
+    "severity": "Medium",
+    "severity_percent": 50,
+    "crop_loss": "~25% Yield",
+    "prevention": [
+      "Plant powdery mildew-resistant squash varieties",
+      "Space plants far apart for maximum airflow",
+      "Avoid excess nitrogen which creates lush, susceptible growth"
+    ],
+    "treatment_steps": [
+      { "title": "Apply Neem Oil or Baking Soda Spray", "detail": "Mix 1 tablespoon Neem oil + 1 litre water + a drop of soap. Spray all leaf surfaces every 7 days." },
+      { "title": "Remove Heavily Infected Leaves", "detail": "Prune off leaves that are more than 50% covered in white powder and dispose of them." },
+      { "title": "Apply Sulfur Fungicide", "detail": "For serious infections, use a wettable sulfur spray. Do not apply when temperature exceeds 32°C." }
+    ]
+  },
+  "Strawberry___Leaf_scorch": {
+    "cause_icon": "local_fire_department",
+    "cause_title": "Fungal Leaf Infection",
+    "cause_detail": "The fungus Diplocarpon earliana causes irregular purple-red spots that dry out and give the leaf a scorched appearance. It spreads via water splash.",
+    "disease_type": "Fungal",
+    "onset": "Acute",
+    "severity": "Medium",
+    "severity_percent": 55,
+    "crop_loss": "~20% Yield",
+    "prevention": [
+      "Plant certified disease-free runners",
+      "Avoid overhead irrigation — use drip watering",
+      "Mulch beds to stop soil splashing onto leaves"
+    ],
+    "treatment_steps": [
+      { "title": "Remove Infected Leaves", "detail": "Carefully remove and destroy all badly infected leaves to reduce the source of spores." },
+      { "title": "Apply Fungicide", "detail": "Spray captan or myclobutanil at 10-day intervals during periods of wet weather." },
+      { "title": "Renovate Beds After Harvest", "detail": "Mow and remove all old foliage after the fruiting season, then apply a fresh layer of mulch." }
+    ]
+  },
+  "Strawberry___healthy": {
+    "cause_icon": "check_circle",
+    "cause_title": "Plant is Healthy",
+    "cause_detail": "No disease detected. Your strawberry plants are in excellent health.",
+    "disease_type": "Healthy",
+    "onset": "N/A",
+    "severity": "None",
+    "severity_percent": 5,
+    "crop_loss": "No Risk",
+    "prevention": [
+      "Mulch beds with straw to keep fruit clean and dry",
+      "Replace plants every 3 years to maintain productivity",
+      "Inspect for slugs and spider mites regularly"
+    ],
+    "treatment_steps": [
+      { "title": "No Treatment Needed", "detail": "Your crop appears healthy. Keep monitoring weekly for any changes." }
+    ]
+  },
+  "Tomato___Bacterial_spot": {
+    "cause_icon": "thunderstorm",
+    "cause_title": "Rain & Wind Spread",
+    "cause_detail": "Xanthomonas campestris bacteria spread explosively in warm rainy weather. The bacteria enter through tiny wounds and leaf pores, causing dark water-soaked spots.",
+    "disease_type": "Bacterial",
+    "onset": "Acute",
+    "severity": "High",
+    "severity_percent": 70,
+    "crop_loss": "~45% Yield",
+    "prevention": [
+      "Use certified pathogen-free seeds and transplants",
+      "Rotate tomato crops every 2 years",
+      "Use drip irrigation to keep foliage dry"
+    ],
+    "treatment_steps": [
+      { "title": "Apply Copper Bactericide", "detail": "Spray copper hydroxide or copper oxychloride every 5–7 days during warm, wet weather." },
+      { "title": "Remove Heavily Infected Plants", "detail": "Pull out and destroy plants that are more than 50% infected to reduce bacterial load in the field." },
+      { "title": "Sanitise Tools Daily", "detail": "Disinfect all tools with a 10% bleach solution to prevent spreading bacteria by touch." }
+    ]
+  },
+  "Tomato___Early_blight": {
+    "cause_icon": "humidity_percentage",
+    "cause_title": "Warm Humid Conditions",
+    "cause_detail": "The fungus Alternaria solani thrives at 24–29°C with high humidity. Older and stressed plants are infected first, with characteristic brown target-ring spots.",
+    "disease_type": "Fungal",
+    "onset": "Acute",
+    "severity": "High",
+    "severity_percent": 75,
+    "crop_loss": "~40% Yield",
+    "prevention": [
+      "Rotate crops every 2 years",
+      "Avoid overhead watering — water at the base",
+      "Prune lower leaves to improve airflow at the base"
+    ],
+    "treatment_steps": [
+      { "title": "Prune Affected Leaves", "detail": "Remove leaves with brown spots from the bottom of the plant upwards. Dispose away from the field." },
+      { "title": "Apply Fungicide", "detail": "Spray Mancozeb (2g per litre of water) or chlorothalonil every 7 days after rain." },
+      { "title": "Mulch the Soil", "detail": "Apply a thick layer of straw mulch around plant bases to stop fungal spores splashing from soil onto lower leaves." }
+    ]
+  },
+  "Tomato___Late_blight": {
+    "cause_icon": "storm",
+    "cause_title": "Cool Wet Weather",
+    "cause_detail": "Phytophthora infestans can destroy an entire tomato crop in days under cool (10–20°C) wet conditions. Dark greasy patches appear on leaves and fruit.",
+    "disease_type": "Fungal",
+    "onset": "Acute",
+    "severity": "High",
+    "severity_percent": 90,
+    "crop_loss": "~80% Yield",
+    "prevention": [
+      "Plant resistant tomato varieties",
+      "Destroy any infected plants or potato cull piles nearby",
+      "Avoid overhead irrigation during cool, cloudy weather"
+    ],
+    "treatment_steps": [
+      { "title": "Remove Infected Plants Immediately", "detail": "Do not compost. Bag infected plants and burn or bury them far from the field — every hour matters." },
+      { "title": "Apply Fungicide Preventively", "detail": "Spray chlorothalonil or mancozeb before symptoms appear when wet, cool weather is forecast." },
+      { "title": "Inspect Daily During Risk Periods", "detail": "Scout the entire field every morning during cool, rainy weather. Catch it early or you will lose the crop." }
+    ]
+  },
+  "Tomato___Leaf_Mold": {
+    "cause_icon": "water_drop",
+    "cause_title": "High Greenhouse Humidity",
+    "cause_detail": "The fungus Cladosporium fulvum thrives when relative humidity exceeds 85%, especially in greenhouses. Yellow patches appear on top of leaves, olive mould below.",
+    "disease_type": "Fungal",
+    "onset": "Acute",
+    "severity": "Medium",
+    "severity_percent": 55,
+    "crop_loss": "~30% Yield",
+    "prevention": [
+      "Ventilate greenhouses to keep humidity below 85%",
+      "Space plants well to improve airflow between rows",
+      "Plant leaf mould-resistant tomato varieties"
+    ],
+    "treatment_steps": [
+      { "title": "Reduce Humidity", "detail": "Increase ventilation and heating during the night to reduce moisture on leaf surfaces." },
+      { "title": "Remove Infected Leaves", "detail": "Remove and destroy all leaves showing yellow patches and olive mould on the undersides." },
+      { "title": "Apply Copper Fungicide", "detail": "Spray copper-based fungicide every 7 days until conditions improve and symptoms stop spreading." }
+    ]
+  },
+  "Tomato___Septoria_leaf_spot": {
+    "cause_icon": "grain",
+    "cause_title": "Wet Warm Conditions",
+    "cause_detail": "Septoria lycopersici produces tiny circular spots with white centres and dark borders. It spreads rapidly by rain splash from infected lower leaves and soil.",
+    "disease_type": "Fungal",
+    "onset": "Acute",
+    "severity": "Medium",
+    "severity_percent": 60,
+    "crop_loss": "~30% Yield",
+    "prevention": [
+      "Rotate tomatoes with non-host crops every 2 years",
+      "Mulch the soil to prevent spore splash from soil",
+      "Remove lower leaves as the plant grows"
+    ],
+    "treatment_steps": [
+      { "title": "Remove Infected Lower Leaves", "detail": "Start from the bottom — remove all spotted leaves immediately and dispose of them." },
+      { "title": "Apply Fungicide", "detail": "Spray chlorothalonil or copper-based fungicide every 7–10 days during wet weather." },
+      { "title": "Avoid Wetting Foliage", "detail": "Switch to drip or base watering to stop splashing spores between plants." }
+    ]
+  },
+  "Tomato___Spider_mites Two-spotted_spider_mite": {
+    "cause_icon": "device_thermostat",
+    "cause_title": "Hot & Dry Conditions",
+    "cause_detail": "Two-spotted spider mites (Tetranychus urticae) are tiny arachnids — not insects. They thrive in hot, dry, dusty conditions and reproduce extremely fast.",
+    "disease_type": "Pest",
+    "onset": "Acute",
+    "severity": "High",
+    "severity_percent": 65,
+    "crop_loss": "~35% Yield",
+    "prevention": [
+      "Keep plants well-watered — stressed plants attract mites",
+      "Encourage beneficial insects like ladybugs and lacewings",
+      "Avoid dusty conditions around the crop"
+    ],
+    "treatment_steps": [
+      { "title": "Spray Leaves with Water", "detail": "A strong jet of water on the underside of leaves dislodges and kills many mites immediately." },
+      { "title": "Apply Neem Oil or Insecticidal Soap", "detail": "Spray neem oil or insecticidal soap solution thoroughly on all leaf surfaces, especially undersides, every 5–7 days." },
+      { "title": "Use Miticide for Severe Cases", "detail": "If population is very high, apply a registered miticide. Rotate between products to prevent resistance." }
+    ]
+  },
+  "Tomato___Target_Spot": {
+    "cause_icon": "adjust",
+    "cause_title": "Warm Wet Weather",
+    "cause_detail": "The fungus Corynespora cassiicola causes distinctive concentric ring lesions resembling a target. It spreads via infected plant debris and water splash.",
+    "disease_type": "Fungal",
+    "onset": "Acute",
+    "severity": "Medium",
+    "severity_percent": 58,
+    "crop_loss": "~30% Yield",
+    "prevention": [
+      "Rotate tomatoes with non-host crops",
+      "Maintain adequate plant spacing for air circulation",
+      "Avoid overhead irrigation"
+    ],
+    "treatment_steps": [
+      { "title": "Remove Infected Material", "detail": "Pick off and destroy all leaves and fruit showing target-like ring spots." },
+      { "title": "Apply Fungicide", "detail": "Spray chlorothalonil or azoxystrobin every 7–14 days from first symptoms." },
+      { "title": "Sanitise Field After Harvest", "detail": "Till under or remove all crop debris to prevent the fungus from surviving into next season." }
+    ]
+  },
+  "Tomato___Tomato_Yellow_Leaf_Curl_Virus": {
+    "cause_icon": "pest_control",
+    "cause_title": "Whitefly-Transmitted Virus",
+    "cause_detail": "This virus is injected into plants by the silverleaf whitefly (Bemisia tabaci) as it feeds. Infected plants show upward leaf curling and severe stunting — there is no cure.",
+    "disease_type": "Viral",
+    "onset": "Chronic",
+    "severity": "High",
+    "severity_percent": 88,
+    "crop_loss": "~75% Yield",
+    "prevention": [
+      "Plant virus-resistant tomato varieties (TYLCV-R)",
+      "Use reflective silver mulch to repel whiteflies",
+      "Install yellow sticky traps to monitor and catch whiteflies early"
+    ],
+    "treatment_steps": [
+      { "title": "Remove Infected Plants", "detail": "There is no cure. Remove and bag infected plants immediately to stop whiteflies feeding on them and spreading the virus." },
+      { "title": "Control Whiteflies", "detail": "Spray imidacloprid or spinosad on healthy remaining plants to kill whitefly populations before they spread further." },
+      { "title": "Replant with Resistant Varieties", "detail": "Source certified TYLCV-resistant tomato varieties for the next planting season." }
+    ]
+  },
+  "Tomato___Tomato_mosaic_virus": {
+    "cause_icon": "touch_app",
+    "cause_title": "Contact-Spread Virus",
+    "cause_detail": "Tomato mosaic virus (ToMV) spreads through direct contact — on hands, tools, clothing, and even cigarette tobacco. It survives for years in soil and debris.",
+    "disease_type": "Viral",
+    "onset": "Chronic",
+    "severity": "High",
+    "severity_percent": 75,
+    "crop_loss": "~50% Yield",
+    "prevention": [
+      "Use certified virus-free seeds or resistant varieties",
+      "Wash hands thoroughly before entering the field",
+      "Sanitise all tools between plants with 10% bleach or milk solution"
+    ],
+    "treatment_steps": [
+      { "title": "Remove and Destroy Infected Plants", "detail": "There is no cure. Remove infected plants immediately, bag them and burn or bury away from the field." },
+      { "title": "Sanitise All Tools and Hands", "detail": "Dip tools in a 10% bleach solution or rub with milk between plants. Wash hands with soap before re-entering the field." },
+      { "title": "Do Not Smoke Near Plants", "detail": "Tobacco products can carry mosaic virus. Do not smoke near the crop or touch plants after handling tobacco." }
+    ]
+  },
+  "Tomato___healthy": {
+    "cause_icon": "check_circle",
+    "cause_title": "Plant is Healthy",
+    "cause_detail": "No disease detected. Your tomato plant is in excellent health and growing well.",
+    "disease_type": "Healthy",
+    "onset": "N/A",
+    "severity": "None",
+    "severity_percent": 5,
+    "crop_loss": "No Risk",
+    "prevention": [
+      "Water consistently at the base — never on leaves",
+      "Stake or cage plants before they need support",
+      "Inspect for early blight and hornworms weekly"
+    ],
+    "treatment_steps": [
+      { "title": "No Treatment Needed", "detail": "Your crop appears healthy. Keep monitoring weekly for any changes." }
+    ]
+  }
+}

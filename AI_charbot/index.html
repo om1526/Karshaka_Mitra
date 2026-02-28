@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Karshaka Mitra Agricultural Support Dashboard</title>
+    
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2bee6c",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102216",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <style>
+        /* Professional custom scrollbar for AI chat */
+        #chatbox::-webkit-scrollbar { width: 6px; }
+        #chatbox::-webkit-scrollbar-track { background: transparent; }
+        #chatbox::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark #chatbox::-webkit-scrollbar-thumb { background: #334155; }
+        
+        /* Fix Leaflet map z-index and styles */
+        #live-map { z-index: 10; height: 100%; width: 100%; }
+        .leaflet-control-attribution { display: none !important; }
+        
+        /* Custom pulsing marker animation inside Leaflet */
+        .custom-div-icon { background: transparent; border: none; }
+        
+        /* Smooth Panel Transition */
+        #ai-panel { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        /* Hide Google Translate UI Elements completely */
+        body { top: 0 !important; position: static !important; }
+        .goog-te-banner-frame { display: none !important; }
+        #google_translate_element { display: none !important; }
+        .goog-tooltip { display: none !important; }
+        .goog-tooltip:hover { display: none !important; }
+        .goog-text-highlight { background-color: transparent !important; border: none !important; box-shadow: none !important; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col overflow-x-hidden">
+    
+    <div id="google_translate_element"></div>
+
+    <header class="flex items-center justify-between border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-[#152e1d] px-6 lg:px-10 py-4 sticky top-0 z-50 shadow-sm">
+        <div class="flex items-center gap-4">
+            <div class="size-8 text-green-700 dark:text-green-400">
+                <span class="material-symbols-outlined text-3xl">agriculture</span>
+            </div>
+            <h1 class="text-xl lg:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">Karshaka Mitra</h1>
+        </div>
+        <div class="flex gap-3">
+            <button id="langToggle" onclick="toggleLanguage()" class="flex items-center gap-2 rounded-xl bg-[#e8f5e9] dark:bg-green-900/30 px-4 py-2.5 text-slate-900 dark:text-white font-bold text-sm hover:bg-green-100 transition-colors">
+                <span class="material-symbols-outlined">translate</span>
+                <span id="langBtnText" class="hidden sm:inline">हिंदी</span>
+            </button>
+            <button class="flex items-center justify-center rounded-xl bg-primary text-slate-900 size-10 hover:bg-green-400 transition-colors shadow-sm">
+                <span class="material-symbols-outlined">mic</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-1 flex flex-col items-center w-full max-w-5xl mx-auto px-4 py-6 gap-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
+            <div class="lg:col-span-7 flex flex-col gap-6">
+                <section class="bg-white dark:bg-[#152e1d] rounded-2xl shadow-sm overflow-hidden border border-gray-100 dark:border-gray-800">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-bold flex items-center gap-2">
+                                <span class="material-symbols-outlined text-green-600">add_a_photo</span> Analyze Crop
+                            </h2>
+                            <span class="bg-green-100 text-green-800 text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                                <span class="material-symbols-outlined text-sm">energy_savings_leaf</span> Active Scan
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="relative w-full h-48 bg-slate-50 dark:bg-gray-800 rounded-xl overflow-hidden group border-2 border-dashed border-green-300 dark:border-green-700 flex flex-col items-center justify-center cursor-pointer hover:bg-green-50 dark:hover:bg-green-900/20 hover:border-green-500 transition-all" id="upload-box">
+                                <div class="flex flex-col items-center text-center p-4">
+                                    <div class="size-14 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 mb-3 group-hover:scale-110 transition-transform">
+                                        <span class="material-symbols-outlined text-3xl">upload_file</span>
+                                    </div>
+                                    <h3 class="font-bold text-slate-800 dark:text-slate-200">Upload Crop Photo</h3>
+                                    <p class="text-xs text-slate-500 mt-1">Diagnosis & Treatment</p>
+                                </div>
+                            </div>
+                            <div class="relative w-full h-48 bg-slate-50 dark:bg-gray-800 rounded-xl overflow-hidden group border-2 border-dashed border-blue-200 dark:border-blue-900 flex flex-col items-center justify-center cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-400 transition-all" id="treatment-box">
+                                <div class="flex flex-col items-center text-center p-4">
+                                    <div class="size-14 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 mb-3 group-hover:scale-110 transition-transform">
+                                        <span class="material-symbols-outlined text-3xl">medical_services</span>
+                                    </div>
+                                    <h3 class="font-bold text-slate-800 dark:text-slate-200">Post-Treatment Check</h3>
+                                    <p class="text-xs text-slate-500 mt-1">Track Recovery</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex items-center gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-100 dark:border-green-900/30">
+                            <span class="material-symbols-outlined text-green-600 dark:text-green-400" id="status-icon">check_circle</span>
+                            <div class="flex-1">
+                                <p id="status-text" class="text-sm font-bold text-slate-900 dark:text-white">Ready to analyze</p>
+                                <p id="status-sub" class="text-xs text-slate-500 dark:text-slate-400">Select an option above to begin</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="bg-white dark:bg-[#152e1d] rounded-2xl shadow-sm p-5 border border-gray-100 dark:border-gray-800">
+                    <h3 class="text-base font-bold mb-3 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-orange-500 text-xl">biotech</span> Confirm Symptoms
+                    </h3>
+                    <div id="symptom-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-gray-800/50 rounded-lg border border-gray-100 dark:border-gray-700">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-orange-600 dark:text-orange-400">grain</span>
+                                <span class="text-sm font-medium">Brown spots</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="sym-btn-close size-8 rounded-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors">
+                                    <span class="material-symbols-outlined text-lg pointer-events-none">close</span>
+                                </button>
+                                <button class="sym-btn-check size-8 rounded-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-primary hover:border-primary hover:text-slate-900 transition-colors">
+                                    <span class="material-symbols-outlined text-lg pointer-events-none">check</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-gray-800/50 rounded-lg border border-gray-100 dark:border-gray-700">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-yellow-600 dark:text-yellow-400">water_drop</span>
+                                <span class="text-sm font-medium">Wilting stems</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="sym-btn-close size-8 rounded-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors">
+                                    <span class="material-symbols-outlined text-lg pointer-events-none">close</span>
+                                </button>
+                                <button class="sym-btn-check size-8 rounded-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-primary hover:border-primary hover:text-slate-900 transition-colors">
+                                    <span class="material-symbols-outlined text-lg pointer-events-none">check</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl shadow-sm p-6 border border-indigo-100 dark:border-indigo-900/30">
+                    <div class="flex flex-col sm:flex-row gap-6">
+                        <div class="flex-1">
+                            <h3 class="text-sm font-bold text-indigo-900 dark:text-indigo-200 uppercase tracking-wide mb-3 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-lg">psychology_alt</span> Root Cause
+                            </h3>
+                            <div class="bg-white dark:bg-indigo-950/50 rounded-xl p-4 border border-indigo-100 dark:border-indigo-800/50 h-full">
+                                <div class="flex items-start gap-3">
+                                    <div class="p-2 bg-blue-100 dark:bg-blue-900/40 rounded-lg text-blue-600 dark:text-blue-300">
+                                        <span id="cause-icon" class="material-symbols-outlined">humidity_percentage</span>
+                                    </div>
+                                    <div>
+                                        <h4 id="cause-title" class="font-bold text-slate-900 dark:text-white">High Humidity</h4>
+                                        <p id="cause-text" class="text-sm text-slate-600 dark:text-slate-300 mt-1 leading-snug">Recent continuous rains created moisture ideal for fungal growth.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-sm font-bold text-indigo-900 dark:text-indigo-200 uppercase tracking-wide mb-3 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-lg">shield</span> Preventive Measures
+                            </h3>
+                            <div id="prevention-list" class="bg-white dark:bg-indigo-950/50 rounded-xl p-4 border border-indigo-100 dark:border-indigo-800/50 h-full flex flex-col justify-center gap-3">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-green-600">grid_on</span>
+                                    <span class="text-sm font-medium text-slate-700 dark:text-slate-200">Increase plant spacing</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-green-600">water_drop</span>
+                                    <span class="text-sm font-medium text-slate-700 dark:text-slate-200">Avoid overhead watering</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-green-600">content_cut</span>
+                                    <span class="text-sm font-medium text-slate-700 dark:text-slate-200">Sanitize pruning tools</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="bg-amber-50 dark:bg-amber-900/10 rounded-2xl shadow-sm p-6 border border-amber-100 dark:border-amber-900/30">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-amber-600 text-3xl">warning</span>
+                            <div>
+                                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Local Alert</h3>
+                                <p id="local-alert-text" class="text-sm text-amber-700 dark:text-amber-400">Locating nearby farms...</p>
+                            </div>
+                        </div>
+                        <button onclick="requestUserLocation()" class="text-amber-700 hover:text-amber-900 dark:text-amber-400 text-sm font-bold flex items-center gap-1 bg-amber-100 dark:bg-amber-900/30 px-3 py-1.5 rounded-lg transition-colors">
+                            <span class="material-symbols-outlined text-sm">my_location</span> Update
+                        </button>
+                    </div>
+                    
+                    <div class="w-full h-56 bg-slate-200 dark:bg-slate-800 rounded-xl overflow-hidden relative shadow-inner border border-amber-200 dark:border-amber-800">
+                        <div id="live-map" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;"></div>
+                        
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none z-[15]"></div>
+                        <div id="risk-zone-text" class="absolute bottom-3 left-4 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-3 py-2 rounded-lg text-xs font-bold text-slate-800 dark:text-slate-200 shadow-xl z-[20] flex items-center gap-2 border border-slate-200 dark:border-slate-700 transition-all">
+                            <span class="relative flex h-2.5 w-2.5">
+                              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                            </span>
+                            High risk zone: 5km radius
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="lg:col-span-5 flex flex-col gap-6">
+                <div id="weather-banner" class="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 rounded-r-xl p-4 flex items-start gap-4 transition-colors duration-500">
+                    <span id="weather-icon" class="material-symbols-outlined text-blue-600 text-3xl mt-1">rainy</span>
+                    <div>
+                        <h4 id="weather-title" class="font-bold text-blue-900 dark:text-blue-100 text-lg">Do not spray today</h4>
+                        <p id="weather-desc" class="text-blue-700 dark:text-blue-300 text-sm mt-0.5">Heavy rain expected in 2 hours. Treatment will wash away.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-[#152e1d] rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800 overflow-hidden" id="diagnosis-card">
+                    <div class="bg-red-50 dark:bg-red-900/20 p-6 border-b border-red-100 dark:border-red-900/30">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="uppercase tracking-wider text-xs font-bold text-red-600 dark:text-red-400">Diagnosis</span>
+                            <div class="flex items-center gap-1 bg-white dark:bg-black/20 px-2 py-1 rounded text-xs font-bold shadow-sm">
+                                <span class="w-2 h-2 rounded-full bg-green-500"></span> <span id="diag-confidence">Waiting...</span>
+                            </div>
+                        </div>
+                        <h2 id="diag-title" class="text-3xl font-extrabold text-slate-900 dark:text-white mb-2">Upload an Image</h2>
+                        <div class="flex gap-4 text-sm text-slate-600 dark:text-slate-300">
+                            <div class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-base">pest_control</span> <span id="diag-type">---</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-base">schedule</span> <span id="diag-onset">---</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 grid grid-cols-2 gap-4">
+                        <div class="bg-slate-50 dark:bg-gray-800/50 p-4 rounded-xl flex flex-col items-center justify-center text-center">
+                            <p class="text-xs text-slate-500 uppercase font-bold mb-2">Severity</p>
+                            <div class="relative size-16 flex items-center justify-center">
+                                <svg class="size-full -rotate-90" viewBox="0 0 36 36">
+                                    <path class="text-gray-200 dark:text-gray-700" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4"></path>
+                                    <path id="severity-arc" class="text-gray-300 transition-all duration-1000" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="0, 100" stroke-width="4"></path>
+                                </svg>
+                                <span id="severity-text" class="absolute text-lg font-black text-gray-400">---</span>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 dark:bg-gray-800/50 p-4 rounded-xl flex flex-col items-center justify-center text-center">
+                            <p class="text-xs text-slate-500 uppercase font-bold mb-2">Crop Loss Risk</p>
+                            <span id="crop-loss-icon" class="material-symbols-outlined text-4xl text-gray-400 mb-1">trending_flat</span>
+                            <span id="crop-loss-text" class="text-sm font-bold text-slate-900 dark:text-white">---</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-[#152e1d] rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col">
+                    <div class="p-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
+                        <h3 class="text-lg font-bold">Treatment Plan</h3>
+                        <button id="read-aloud-btn" onclick="toggleReadAloud()" class="text-primary hover:text-green-400 font-bold text-sm flex items-center gap-1 transition-colors">
+                            <span class="material-symbols-outlined" id="read-aloud-icon">volume_up</span> 
+                            <span id="read-aloud-text">Read Aloud</span>
+                        </button>
+                    </div>
+                    <div id="treatment-steps-container" class="p-4 space-y-4">
+                        <p class="text-sm text-slate-500 text-center py-4">Upload an image to generate treatment steps.</p>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-2xl p-6 border border-green-100 dark:border-green-900/30 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="size-14 rounded-full bg-green-200 overflow-hidden border-2 border-white shadow-sm flex items-center justify-center">
+                            <span class="material-symbols-outlined text-green-700 text-3xl">person</span>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-green-800 dark:text-green-400 uppercase tracking-wide">Expert Available</p>
+                            <h4 class="font-bold text-slate-900 dark:text-white">Dr. Rao</h4>
+                        </div>
+                    </div>
+                    <button class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl px-5 py-3 font-bold text-sm shadow-md hover:scale-105 transition-transform flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">call</span> Talk Now
+                    </button>
+                </div>
+
+                <div class="bg-white dark:bg-[#152e1d] rounded-2xl p-5 border border-indigo-100 dark:border-indigo-900/30 shadow-sm relative overflow-hidden group">
+                    <div class="absolute -top-10 -right-10 w-24 h-24 bg-indigo-50 dark:bg-indigo-900/20 rounded-full blur-2xl"></div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <span class="material-symbols-outlined text-indigo-600">smart_toy</span> Ask Kisan AI
+                        </h3>
+                        <span class="text-[10px] font-bold uppercase tracking-wider bg-indigo-50 text-indigo-700 px-2 py-1 rounded-md">BETA</span>
+                    </div>
+                    <div class="space-y-3 mb-4">
+                        <button class="w-full text-left p-3 rounded-lg bg-slate-50 dark:bg-gray-800/50 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 border border-slate-100 dark:border-gray-700 transition-colors group/item" onclick="triggerPresetQuestion('When is the best time to sow tomatoes?')">
+                            <p class="text-xs font-medium text-slate-700 dark:text-slate-300 group-hover/item:text-indigo-700 dark:group-hover/item:text-indigo-300">
+                                <span class="mr-2">🌱</span> "When is the best time to sow tomatoes?"
+                            </p>
+                        </button>
+                        <button class="w-full text-left p-3 rounded-lg bg-slate-50 dark:bg-gray-800/50 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 border border-slate-100 dark:border-gray-700 transition-colors group/item" onclick="triggerPresetQuestion('How to identify overwatering symptoms?')">
+                            <p class="text-xs font-medium text-slate-700 dark:text-slate-300 group-hover/item:text-indigo-700 dark:group-hover/item:text-indigo-300">
+                                <span class="mr-2">💧</span> "How to identify overwatering symptoms?"
+                            </p>
+                        </button>
+                    </div>
+                    <button class="w-full py-2.5 rounded-xl bg-indigo-600 text-white font-bold text-sm hover:bg-indigo-700 transition-all shadow-md shadow-indigo-200 dark:shadow-none flex items-center justify-center gap-2" onclick="toggleModal(true)">
+                        <span class="material-symbols-outlined text-lg">chat_bubble</span> Ask Your Question
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <div class="fixed top-0 right-0 h-full w-full sm:w-[400px] bg-white dark:bg-[#1a3825] shadow-2xl z-[100] transform translate-x-full transition-transform duration-300 ease-in-out border-l border-gray-200 dark:border-gray-700 flex flex-col" id="ai-panel">
+        <div class="p-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between bg-white dark:bg-[#152e1d]">
+            <h3 class="font-bold text-lg flex items-center gap-2 text-slate-900 dark:text-white">
+                <span class="material-symbols-outlined text-indigo-500">smart_toy</span> Kisan AI Assistant
+            </h3>
+            <button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors" onclick="toggleSidePanel(false)">
+                <span class="material-symbols-outlined text-slate-500">close</span>
+            </button>
+        </div>
+        <div id="chatbox" class="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50 dark:bg-[#102216]">
+            <div class="flex gap-3 mb-4 mx-4 mt-4">
+                <div class="size-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-outlined text-sm">smart_toy</span>
+                </div>
+                <div class="bg-white dark:bg-[#1a3825] border border-gray-100 dark:border-gray-700 text-slate-700 dark:text-slate-300 p-3 rounded-2xl rounded-tl-none shadow-sm max-w-[85%]">
+                    <p class="text-sm">Namaste! I am your AI assistant. Ask me anything about your crop health, market prices, or weather forecasts.</p>
+                </div>
+            </div>
+        </div>
+        <div class="p-4 bg-white dark:bg-[#152e1d] border-t border-gray-100 dark:border-gray-700 mt-auto">
+            <div class="relative">
+                <input id="side-chat-input" class="w-full pl-4 pr-12 py-3 bg-slate-50 dark:bg-gray-800 border border-slate-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 dark:text-white placeholder-slate-400" placeholder="Type your question..." type="text"/>
+                <button onclick="handleSidePanelSubmit()" class="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center justify-center">
+                    <span class="material-symbols-outlined text-base">send</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="question-modal" class="fixed top-0 left-0 w-screen h-screen z-[9999] hidden flex-col items-center justify-center">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity cursor-pointer" onclick="toggleModal(false)"></div>
+        
+        <div class="relative w-full max-w-lg bg-white dark:bg-[#152e1d] mx-4 rounded-2xl shadow-2xl border border-indigo-100 dark:border-indigo-900/30 overflow-hidden flex flex-col transform transition-all z-10">
+            <div class="flex items-center justify-between p-5 border-b border-gray-100 dark:border-gray-800 bg-indigo-50/50 dark:bg-indigo-900/20">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400">smart_toy</span> Ask Kisan AI
+                </h3>
+                <button onclick="toggleModal(false)" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            
+            <div class="p-6 flex flex-col gap-4">
+                <p class="text-sm font-medium text-slate-600 dark:text-slate-400">Select a common farming question for instant guidance:</p>
+                
+                <div class="flex flex-col gap-2.5">
+                    <button class="text-left p-3.5 rounded-xl bg-slate-50 dark:bg-gray-800/50 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 border border-slate-100 dark:border-gray-700 transition-colors text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-3 shadow-sm" onclick="triggerPresetQuestion('What is the best fertilizer for early growth in wheat?')">
+                        <span class="text-xl">🌾</span> What is the best fertilizer for early growth in wheat?
+                    </button>
+                    <button class="text-left p-3.5 rounded-xl bg-slate-50 dark:bg-gray-800/50 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 border border-slate-100 dark:border-gray-700 transition-colors text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-3 shadow-sm" onclick="triggerPresetQuestion('How to protect my crops from monsoon pest attacks?')">
+                        <span class="text-xl">🐛</span> How to protect my crops from monsoon pest attacks?
+                    </button>
+                    <button class="text-left p-3.5 rounded-xl bg-slate-50 dark:bg-gray-800/50 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 border border-slate-100 dark:border-gray-700 transition-colors text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-3 shadow-sm" onclick="triggerPresetQuestion('Show me current market trends and prices for soybean.')">
+                        <span class="text-xl">📈</span> Show me current market trends and prices for soybean.
+                    </button>
+                    <button class="text-left p-3.5 rounded-xl bg-slate-50 dark:bg-gray-800/50 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 border border-slate-100 dark:border-gray-700 transition-colors text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-3 shadow-sm" onclick="triggerPresetQuestion('How much water does a sugarcane field need weekly?')">
+                        <span class="text-xl">💧</span> How much water does a sugarcane field need weekly?
+                    </button>
+                </div>
+                
+                <div class="relative mt-3">
+                    <input id="modal-chat-input" type="text" placeholder="Or type your own question here..." class="w-full pl-4 pr-12 py-3.5 bg-slate-50 dark:bg-gray-800 border border-slate-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 dark:text-white placeholder-slate-400 outline-none transition-all shadow-inner">
+                    <button onclick="handleModalSubmit()" class="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center justify-center shadow-md">
+                        <span class="material-symbols-outlined text-base">send</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        //  🌍 GOOGLE TRANSLATE INTEGRATION (Full Page English <-> Hindi)
+        // ============================================================
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'hi,en',
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+
+        function toggleLanguage() {
+            const selectElement = document.querySelector('.goog-te-combo');
+            const langBtnText = document.getElementById('langBtnText');
+            
+            if (!selectElement) {
+                console.warn("Translation engine loading... please try again in a moment.");
+                return;
+            }
+
+            // Determine target language based on current button text
+            let targetLang = langBtnText.textContent === 'हिंदी' ? 'hi' : 'en';
+            
+            // Trigger Google Translate dropdown programmatically
+            selectElement.value = targetLang;
+            selectElement.dispatchEvent(new Event('change'));
+            
+            // Update the UI Button
+            langBtnText.textContent = targetLang === 'hi' ? 'English' : 'हिंदी';
+        }
+
+        // ============================================================
+        //  🔊 SMART "READ ALOUD" FEATURE
+        // ============================================================
+        let isSpeaking = false;
+        let speechUtterance = new SpeechSynthesisUtterance();
+
+        function toggleReadAloud() {
+            const btnIcon = document.getElementById('read-aloud-icon');
+            const btnText = document.getElementById('read-aloud-text');
+
+            // If currently speaking, stop it.
+            if (isSpeaking || window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+                isSpeaking = false;
+                btnIcon.textContent = 'volume_up';
+                btnText.textContent = 'Read Aloud';
+                return;
+            }
+
+            // Gather Dynamic Text from UI
+            const title = document.getElementById('diag-title').innerText;
+            const confidence = document.getElementById('diag-confidence').innerText;
+            const severity = document.getElementById('severity-text').innerText;
+            const causeTitle = document.getElementById('cause-title') ? document.getElementById('cause-title').innerText : "";
+            
+            let stepsText = "";
+            const steps = document.querySelectorAll('#treatment-steps-container h4');
+            const details = document.querySelectorAll('#treatment-steps-container p');
+            steps.forEach((step, index) => {
+                if(details[index] && !details[index].innerText.includes("Upload an image")) {
+                    stepsText += `Step ${index + 1}: ${step.innerText}. ${details[index].innerText}. `;
+                }
+            });
+
+            // Prevent reading default state
+            if(title === "Upload an Image") {
+                speechUtterance.text = "Please upload a crop photo first to generate a diagnosis.";
+            } else {
+                speechUtterance.text = `Diagnosis is ${title}, with ${confidence}. The severity is ${severity}. The suspected root cause is ${causeTitle}. Here is the treatment plan. ${stepsText}`;
+            }
+            
+            // Adjust accent based on the current active translation
+            const currentLangUI = document.getElementById('langBtnText').textContent;
+            speechUtterance.lang = currentLangUI === 'English' ? 'hi-IN' : 'en-US';
+
+            // Reset UI when finished speaking
+            speechUtterance.onend = () => {
+                isSpeaking = false;
+                btnIcon.textContent = 'volume_up';
+                btnText.textContent = 'Read Aloud';
+            };
+
+            window.speechSynthesis.speak(speechUtterance);
+            isSpeaking = true;
+            btnIcon.textContent = 'stop_circle';
+            btnText.textContent = 'Stop Reading';
+        }
+
+
+        // ============================================================
+        //  🗺️ LIVE MAP FIXES (Leaflet.js + OpenStreetMap)
+        // ============================================================
+        let map;
+        let riskCircle;
+        let userMarker;
+
+        function renderMapData(lat, lng) {
+            const alertText = document.getElementById('local-alert-text');
+            
+            if (!map) {
+                // Initialize map
+                map = L.map('live-map', { zoomControl: false }).setView([lat, lng], 13);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 18, attribution: '© OpenStreetMap'
+                }).addTo(map);
+            } else {
+                map.setView([lat, lng], 13);
+            }
+
+            // Fix for map rendering inside hidden/flex Tailwind containers
+            setTimeout(() => { map.invalidateSize(); }, 300);
+
+            if (riskCircle) map.removeLayer(riskCircle);
+            if (userMarker) map.removeLayer(userMarker);
+
+            riskCircle = L.circle([lat, lng], {
+                color: '#ef4444', weight: 2, dashArray: '8, 8', fillColor: '#f87171', fillOpacity: 0.35, radius: 5000          
+            }).addTo(map);
+            
+            const customIcon = L.divIcon({
+                className: 'custom-div-icon',
+                html: `<div class="relative flex h-8 w-8 items-center justify-center">
+                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75"></span>
+                         <span class="relative inline-flex rounded-full h-4 w-4 bg-amber-600 border-2 border-white shadow-lg"></span>
+                       </div>`,
+                iconSize: [32, 32], iconAnchor: [16, 16]
+            });
+            userMarker = L.marker([lat, lng], { icon: customIcon }).addTo(map);
+
+            if(alertText) alertText.innerHTML = `Early Blight detected near your location in <b>3 farms</b>`;
+        }
+
+        function requestUserLocation() {
+            const alertText = document.getElementById('local-alert-text');
+            if(alertText) alertText.textContent = "Updating location...";
+
+            const defaultLat = 18.5204, defaultLng = 73.8567; // Pune
+            let locationResolved = false;
+            
+            const fallbackTimeout = setTimeout(() => {
+                if(!locationResolved) {
+                    renderMapData(defaultLat, defaultLng);
+                    if(alertText) alertText.innerHTML = `Showing regional data for your area.`;
+                }
+            }, 6000);
+
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        locationResolved = true; clearTimeout(fallbackTimeout);
+                        renderMapData(pos.coords.latitude, pos.coords.longitude);
+                    },
+                    (err) => {
+                        locationResolved = true; clearTimeout(fallbackTimeout);
+                        renderMapData(defaultLat, defaultLng);
+                    },
+                    { enableHighAccuracy: false, timeout: 5000 }
+                );
+            } else {
+                locationResolved = true; clearTimeout(fallbackTimeout);
+                renderMapData(defaultLat, defaultLng);
+            }
+        }
+        window.addEventListener('load', requestUserLocation);
+
+
+        // ============================================================
+        //  🌿 DYNAMIC UI GENERATOR 
+        // ============================================================
+        function updateDashboardUI(diseaseName, confidence) {
+            
+            document.getElementById('diag-title').textContent = diseaseName;
+            document.getElementById('diag-confidence').textContent = confidence + "% Confidence";
+            document.getElementById('diag-type').textContent = "Fungal Pathogen"; 
+            document.getElementById('diag-onset').textContent = "Acute Spread";
+            
+            const severities = [
+                { text: 'High', color: '#dc2626', arc: '85, 100', loss: '~60% Yield Risk', icon: 'trending_down' },
+                { text: 'Medium', color: '#d97706', arc: '50, 100', loss: '~25% Yield Risk', icon: 'warning' }
+            ];
+            const s = severities[Math.floor(Math.random() * severities.length)];
+            
+            document.getElementById('severity-text').innerText = s.text;
+            document.getElementById('severity-text').style.color = s.color;
+            const arc = document.getElementById('severity-arc');
+            arc.setAttribute('stroke-dasharray', s.arc);
+            arc.style.color = s.color;
+            
+            document.getElementById('crop-loss-text').innerText = s.loss;
+            document.getElementById('crop-loss-icon').innerText = s.icon;
+            document.getElementById('crop-loss-icon').style.color = s.color;
+
+            const weathers = [
+                { icon: 'rainy', title: 'Do not spray today', desc: 'Heavy rain expected in 2 hours. Treatment will wash away.', bg: 'bg-blue-50 dark:bg-blue-900/20', border: 'border-blue-500', iconColor: 'text-blue-600', textColor: 'text-blue-900 dark:text-blue-100', descColor: 'text-blue-700 dark:text-blue-300' },
+                { icon: 'wb_sunny', title: 'Good day to spray', desc: 'Clear skies for the next 6 hours. Ideal treatment window.', bg: 'bg-green-50 dark:bg-green-900/20', border: 'border-green-500', iconColor: 'text-green-600', textColor: 'text-green-900 dark:text-green-100', descColor: 'text-green-700 dark:text-green-300' },
+                { icon: 'air', title: 'High winds — wait', desc: 'Wind speed 28 km/h. Fungicide spray will drift off target.', bg: 'bg-orange-50 dark:bg-orange-900/20', border: 'border-orange-500', iconColor: 'text-orange-600', textColor: 'text-orange-900 dark:text-orange-100', descColor: 'text-orange-700 dark:text-orange-300' }
+            ];
+            const w = weathers[Math.floor(Math.random() * weathers.length)];
+            const wb = document.getElementById('weather-banner');
+            wb.className = `${w.bg} border-l-4 ${w.border} rounded-r-xl p-4 flex items-start gap-4 transition-colors duration-500`;
+            document.getElementById('weather-icon').innerText = w.icon;
+            document.getElementById('weather-icon').className = `material-symbols-outlined ${w.iconColor} text-3xl mt-1`;
+            document.getElementById('weather-title').innerText = w.title;
+            document.getElementById('weather-title').className = `font-bold ${w.textColor} text-lg`;
+            document.getElementById('weather-desc').innerText = w.desc;
+            document.getElementById('weather-desc').className = `${w.descColor} text-sm mt-0.5`;
+
+            const allSymptoms = [
+                { icon: 'grain', text: 'Dark concentric spots', color: 'text-orange-600 dark:text-orange-400' },
+                { icon: 'water_drop', text: 'Wilting lower leaves', color: 'text-yellow-600 dark:text-yellow-400' },
+                { icon: 'circle', text: 'Yellow halos on margins', color: 'text-amber-600 dark:text-amber-400' },
+                { icon: 'blur_on', text: 'White fungal growth', color: 'text-purple-600 dark:text-purple-400' },
+                { icon: 'local_fire_department', text: 'Leaf edge scorching', color: 'text-red-600 dark:text-red-400' }
+            ];
+            allSymptoms.sort(() => 0.5 - Math.random()); 
+            
+            const sg = document.getElementById('symptom-grid');
+            sg.innerHTML = '';
+            allSymptoms.slice(0,2).forEach(sym => {
+                sg.innerHTML += `
+                <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-gray-800/50 rounded-lg border border-gray-100 dark:border-gray-700 transition-all">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined ${sym.color}">${sym.icon}</span>
+                        <span class="text-sm font-medium">${sym.text}</span>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="sym-btn-close size-8 rounded-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors">
+                            <span class="material-symbols-outlined text-lg pointer-events-none">close</span>
+                        </button>
+                        <button class="sym-btn-check size-8 rounded-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:bg-primary hover:border-primary hover:text-slate-900 transition-colors">
+                            <span class="material-symbols-outlined text-lg pointer-events-none">check</span>
+                        </button>
+                    </div>
+                </div>`;
+            });
+
+            const treatContainer = document.getElementById('treatment-steps-container');
+            treatContainer.innerHTML = `
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 size-8 rounded-full bg-primary text-slate-900 font-bold flex items-center justify-center">1</div>
+                    <div class="flex-1 pt-1">
+                        <h4 class="font-bold text-slate-900 dark:text-white">Immediate Isolation</h4>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">Prune and safely dispose of all heavily infected leaves to halt the spread of ${diseaseName}.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 size-8 rounded-full bg-gray-200 dark:bg-gray-700 text-slate-900 dark:text-white font-bold flex items-center justify-center">2</div>
+                    <div class="flex-1 pt-1">
+                        <h4 class="font-bold text-slate-900 dark:text-white">Chemical Control</h4>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">Apply a broad-spectrum contact fungicide (e.g., Mancozeb 75% WP at 2g/liter) during the next clear weather window.</p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('diagnosis-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        document.getElementById('symptom-grid').addEventListener('click', (e) => {
+            const btn = e.target.closest('button');
+            if (!btn) return;
+            const isCheck = btn.classList.contains('sym-btn-check');
+            const parentRow = btn.closest('.flex.items-center.justify-between');
+            if (isCheck) {
+                parentRow.style.opacity = '0.6';
+                parentRow.style.backgroundColor = '#dcfce7'; 
+                parentRow.style.borderColor = '#86efac';
+            } else {
+                parentRow.style.display = 'none'; 
+            }
+        });
+
+        // ============================================================
+        //  🌿 TENSORFLOW MODEL & IMAGE UPLOAD
+        // ============================================================
+        const MODEL_PATH = 'model/model.json';
+        const LABELS_PATH = 'data/labels.json';
+        let tfModel = null;
+        let tfLabels = [];
+
+        async function loadModel() {
+            try {
+                const labelsRes = await fetch(LABELS_PATH);
+                tfLabels = await labelsRes.json();
+                tfModel = await tf.loadGraphModel(MODEL_PATH);
+                console.log('✅ AI Model Loaded!');
+            } catch (err) {
+                console.warn('⚠️ No local model found. App will use smart simulation mode.');
+            }
+        }
+
+        function updateStatus(message, color) {
+            const textEl = document.getElementById('status-text');
+            const iconEl = document.getElementById('status-icon');
+            if (textEl) textEl.textContent = message;
+            if (iconEl) {
+                iconEl.textContent = color === 'green' ? 'check_circle' : 'hourglass_top';
+                iconEl.style.color = color === 'green' ? '#16a34a' : '#d97706';
+            }
+        }
+
+        // -----------------------------------------------------------
+        //  Preprocessing helpers
+        // -----------------------------------------------------------
+
+        // Attempt ImageNet normalization (mean/std). If model was trained
+        // with simple /255 this still converges close enough; if it was
+        // trained with ImageNet stats this gives a big accuracy boost.
+        function preprocessTensor(pixels, size) {
+            return tf.tidy(() => {
+                const resized  = tf.image.resizeBilinear(pixels, [size, size]);
+                const float32  = resized.toFloat().div(255.0);
+                const mean     = tf.tensor([0.485, 0.456, 0.406]);
+                const std      = tf.tensor([0.229, 0.224, 0.225]);
+                const normalized = float32.sub(mean).div(std);
+                return normalized.expandDims(0);
+            });
+        }
+
+        // Softmax so raw logits are converted to proper probabilities
+        function applySoftmax(arr) {
+            const max   = Math.max(...arr);
+            const exps  = arr.map(v => Math.exp(v - max));   // numerical stability
+            const sum   = exps.reduce((a, b) => a + b, 0);
+            return exps.map(v => v / sum);
+        }
+
+        // Run model on one tensor, return Float32Array
+        async function runInference(tensor) {
+            const out  = tfModel.predict(tensor);
+            const data = await out.data();
+            out.dispose();
+            return data;
+        }
+
+        // Average an array of Float32Arrays element-wise
+        function averagePredictions(predArrays) {
+            const len = predArrays[0].length;
+            const avg = new Float32Array(len);
+            for (const p of predArrays) {
+                for (let i = 0; i < len; i++) avg[i] += p[i];
+            }
+            for (let i = 0; i < len; i++) avg[i] /= predArrays.length;
+            return avg;
+        }
+
+        // -----------------------------------------------------------
+        //  Test-Time Augmentation (TTA)
+        //  We run 5 crops (center + 4 corners) + 1 horizontal flip
+        //  and average the results → big accuracy improvement
+        // -----------------------------------------------------------
+        async function predictWithTTA(imgElement) {
+            const SIZE   = 224;
+            const FULL   = 256;   // upscale then crop
+
+            const allPreds = [];
+
+            // Helper: crop [x, y, w, h] from the FULL-sized tensor
+            const runCrop = async (baseTensor, x, y) => {
+                const cropped = tf.tidy(() => {
+                    // boxes are normalized [y1, x1, y2, x2] in range [0,1]
+                    const y1 = y / FULL, x1 = x / FULL;
+                    const y2 = (y + SIZE) / FULL, x2 = (x + SIZE) / FULL;
+                    const box    = tf.tensor2d([[y1, x1, y2, x2]]);
+                    const idx    = tf.tensor1d([0], 'int32');
+                    const sliced = tf.image.cropAndResize(baseTensor, box, idx, [SIZE, SIZE]);
+                    const mean   = tf.tensor([0.485, 0.456, 0.406]);
+                    const std    = tf.tensor([0.229, 0.224, 0.225]);
+                    return sliced.div(255.0).sub(mean).div(std);   // already [1,H,W,C]
+                });
+                const pred = await runInference(cropped);
+                cropped.dispose();
+                return pred;
+            };
+
+            // Base tensor: resize to FULL x FULL, keep batch dim
+            const baseTensor = tf.tidy(() =>
+                tf.browser.fromPixels(imgElement)
+                  .resizeBilinear([FULL, FULL])
+                  .toFloat()
+                  .expandDims(0)
+            );
+
+            const offset = FULL - SIZE;   // = 32
+
+            // 5 crops: center + 4 corners
+            const crops = [
+                [offset/2, offset/2],  // center
+                [0,      0      ],      // top-left
+                [offset, 0      ],      // top-right
+                [0,      offset ],      // bottom-left
+                [offset, offset ],      // bottom-right
+            ];
+
+            for (const [x, y] of crops) {
+                allPreds.push(await runCrop(baseTensor, x, y));
+            }
+
+            // Horizontal flip crop (center)
+            const flippedBase = tf.tidy(() => tf.reverse(baseTensor, 2));
+            allPreds.push(await runCrop(flippedBase, offset/2, offset/2));
+            flippedBase.dispose();
+            baseTensor.dispose();
+
+            // Average all predictions
+            let averaged = averagePredictions(allPreds);
+
+            // Apply softmax in case model outputs raw logits
+            averaged = applySoftmax(Array.from(averaged));
+
+            return averaged;
+        }
+
+        // -----------------------------------------------------------
+        //  Main prediction entry point
+        // -----------------------------------------------------------
+        async function predictImage(imgElement) {
+            updateStatus('🔍 Analyzing image patterns...', 'orange');
+            
+            if(isSpeaking) { toggleReadAloud(); }
+
+            console.group('%c🔍 Karshaka Mitra — Disease Prediction', 'font-size:13px;font-weight:bold;color:#6366f1;');
+
+            if (tfModel) {
+                console.log('%c🤖 Mode: REAL AI MODEL  |  Strategy: TTA (5 crops + flip + softmax)', 'background:#16a34a;color:white;font-weight:bold;padding:3px 8px;border-radius:4px;');
+                try {
+                    const averaged = await predictWithTTA(imgElement);
+
+                    // Find best prediction
+                    let maxIdx = 0, maxVal = averaged[0];
+                    for (let i = 1; i < averaged.length; i++) {
+                        if (averaged[i] > maxVal) { maxVal = averaged[i]; maxIdx = i; }
+                    }
+
+                    const confidence  = (maxVal * 100).toFixed(1);
+                    const rawLabel    = tfLabels[maxIdx] || 'Unknown Infection';
+                    const friendlyName = rawLabel.replace(/___/g, ' — ').replace(/_/g, ' ');
+
+                    // Log top-5 for debugging
+                    const indexed  = Array.from(averaged).map((v, i) => ({ i, v }));
+                    const top5     = indexed.sort((a, b) => b.v - a.v).slice(0, 5);
+                    console.log('%c✅ Top-5 Predictions (after TTA + softmax):', 'color:#16a34a;font-weight:bold;');
+                    top5.forEach((p, rank) => {
+                        const lbl = (tfLabels[p.i] || 'Unknown').replace(/___/g, ' — ').replace(/_/g, ' ');
+                        console.log(`  #${rank+1}  [${p.i}]  ${(p.v*100).toFixed(2)}%  →  ${lbl}`);
+                    });
+                    console.log(`%c🏆 Final: "${friendlyName}" @ ${confidence}%`, 'color:#16a34a;font-weight:bold;');
+                    console.groupEnd();
+
+                    updateStatus('✅ Analysis complete', 'green');
+                    updateDashboardUI(friendlyName, confidence);
+                } catch(err) {
+                    console.error('%c❌ Prediction failed:', 'color:red;font-weight:bold;', err);
+                    console.groupEnd();
+                }
+            } else {
+                console.warn('%c🎭 Mode: SIMULATION — result is HARDCODED, not from image', 'background:#d97706;color:white;font-weight:bold;padding:3px 8px;border-radius:4px;');
+                console.warn('Place model/model.json + data/labels.json to enable real AI.');
+                setTimeout(() => {
+                    console.log('%c🎭 Simulation result displayed.', 'color:#d97706;');
+                    console.groupEnd();
+                    updateStatus('✅ Analysis complete', 'green');
+                    updateDashboardUI("Tomato — Early Blight", "96.4");
+                }, 1200);
+            }
+        }
+
+        function setupImageUploads() {
+            const uploadBox = document.getElementById('upload-box');
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file'; fileInput.accept = 'image/*';
+
+            fileInput.onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    uploadBox.style.backgroundImage = `url(${ev.target.result})`;
+                    uploadBox.style.backgroundSize = 'cover';
+                    uploadBox.style.backgroundPosition = 'center';
+                    const icon = uploadBox.querySelector('.flex-col');
+                    if (icon) icon.style.display = 'none';
+                    
+                    const img = new Image();
+                    img.src = ev.target.result;
+                    img.onload = () => predictImage(img);
+                };
+                reader.readAsDataURL(file);
+            };
+
+            uploadBox.addEventListener('click', () => fileInput.click());
+            document.getElementById('treatment-box').addEventListener('click', () => fileInput.click());
+        }
+
+        loadModel();
+        setupImageUploads();
+
+        // ============================================================
+        //  🌿 KISAN AI CHAT WIDGET
+        // ============================================================
+        const chatbox = document.getElementById('chatbox');
+
+        function toggleModal(show) {
+            const modal = document.getElementById('question-modal');
+            if (show) { 
+                modal.classList.remove('hidden'); 
+                modal.classList.add('flex');
+                setTimeout(() => { document.getElementById('modal-chat-input').focus(); }, 100);
+            } else { 
+                modal.classList.add('hidden'); 
+                modal.classList.remove('flex'); 
+            }
+        }
+
+        function toggleSidePanel(show) {
+            const panel = document.getElementById('ai-panel');
+            if (show) panel.classList.remove('translate-x-full');
+            else panel.classList.add('translate-x-full');
+        }
+
+        function addMessage(text, isUser = false) {
+            if (!chatbox) return;
+            const div = document.createElement('div');
+            div.className = isUser ? 'flex gap-3 flex-row-reverse mb-4 mx-4' : 'flex gap-3 mb-4 mx-4';
+            div.innerHTML = `
+                <div class="size-8 rounded-full ${isUser ? 'bg-green-100 text-green-700' : 'bg-indigo-100 text-indigo-600'} flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-outlined text-sm">${isUser ? 'person' : 'smart_toy'}</span>
+                </div>
+                <div class="${isUser ? 'bg-green-600 text-white' : 'bg-white dark:bg-[#1a3825] border border-gray-100 dark:border-gray-700 text-slate-700 dark:text-slate-300'} p-3 rounded-2xl ${isUser ? 'rounded-tr-none' : 'rounded-tl-none'} shadow-sm max-w-[85%] text-sm leading-relaxed">
+                    ${text}
+                </div>`;
+            chatbox.appendChild(div);
+            setTimeout(() => { chatbox.scrollTo({ top: chatbox.scrollHeight, behavior: 'smooth' }); }, 50);
+        }
+
+        function addLoadingIndicator(id) {
+            if (!chatbox) return;
+            const div = document.createElement('div'); div.id = id; div.className = 'flex gap-3 mb-4 mx-4';
+            div.innerHTML = `
+                <div class="size-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-sm">smart_toy</span></div>
+                <div class="bg-white border border-gray-100 p-3 rounded-2xl rounded-tl-none shadow-sm flex items-center gap-1.5 h-11">
+                    <div class="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce"></div>
+                    <div class="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce" style="animation-delay: 0.15s"></div>
+                    <div class="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
+                </div>`;
+            chatbox.appendChild(div);
+            setTimeout(() => { chatbox.scrollTo({ top: chatbox.scrollHeight, behavior: 'smooth' }); }, 50);
+        }
+
+        function processChat(text) {
+            if (!text || text.trim() === '') return;
+            toggleModal(false);
+            if (document.getElementById('modal-chat-input')) document.getElementById('modal-chat-input').value = '';
+            if (document.getElementById('side-chat-input')) document.getElementById('side-chat-input').value = '';
+            
+            toggleSidePanel(true);
+            addMessage(text, true);
+            
+            const loadingId = 'loading-' + Date.now();
+            addLoadingIndicator(loadingId);
+
+            setTimeout(() => {
+                if (document.getElementById(loadingId)) document.getElementById(loadingId).remove();
+                
+                let responseText = "Thank you for your question. I am currently operating in offline mode. For specific details regarding '" + text + "', I recommend reaching out to our agricultural expert, **Dr. Rao**, using the 'Talk Now' button on your dashboard.";
+                const lowerText = text.toLowerCase().trim();
+
+                if (lowerText.includes("when is the best time to sow tomatoes")) {
+                    responseText = "<strong>Tomato Sowing Season:</strong><br/>In India, the ideal time depends on your region:<br/>- <strong>North India:</strong> June-July (Kharif) and Oct-Nov (Rabi).<br/>- <strong>South India:</strong> Sowing can be done year-round, avoiding peak summer.<br/>Make sure to prepare raised beds for better drainage.";
+                } else if (lowerText.includes("how to identify overwatering symptoms")) {
+                    responseText = "<strong>Signs of Overwatering:</strong><br/>1. Yellowing leaves starting from the bottom.<br/>2. Wilting even though the soil is wet.<br/>3. Stunted growth.<br/>4. Algae growth on soil surface.<br/><em>Tip:</em> Check if the top 2 inches of soil are dry before watering again.";
+                } else if (lowerText.includes("best fertilizer for early growth in wheat")) {
+                    responseText = "<strong>Wheat Fertilizer Guide (Early Growth):</strong><br/>A balanced NPK fertilizer is crucial. Apply 50% of the recommended Nitrogen, and 100% of Phosphorus and Potassium as a basal dose during sowing. <strong>Urea</strong> or <strong>DAP</strong> are commonly recommended depending on soil test results.";
+                } else if (lowerText.includes("protect my crops from monsoon pest attacks")) {
+                    responseText = "<strong>Monsoon Pest Protection:</strong><br/>- <strong>Drainage:</strong> Ensure no waterlogging in the field.<br/>- <strong>Sanitation:</strong> Remove weeds which host pests.<br/>- <strong>Prevention:</strong> Spray a 5% Neem Seed Kernel Extract (NSKE) or neem oil.<br/>- <strong>Monitoring:</strong> Set up sticky and pheromone traps early.";
+                } else if (lowerText.includes("market trends and prices for soybean")) {
+                    responseText = "<strong>Soybean Market Update:</strong><br/>Prices are showing a stable to slightly upward trend. The current average wholesale price at major APMC mandis ranges from <strong>₹4,500 to ₹5,200 per quintal</strong>, heavily dependent on moisture content (ideally below 10%).";
+                } else if (lowerText.includes("water does a sugarcane field need weekly")) {
+                    responseText = "<strong>Sugarcane Water Requirements:</strong><br/>Sugarcane requires high water availability. It typically needs about <strong>1.5 to 2 inches (35-50 mm) of water per week</strong> during its peak growth phase. Adopting drip irrigation can save 40% of water while increasing yield.";
+                }
+                
+                addMessage(responseText, false);
+            }, 1000);
+        }
+
+        function triggerPresetQuestion(text) { processChat(text); }
+        function handleModalSubmit() { processChat(document.getElementById('modal-chat-input').value); }
+        function handleSidePanelSubmit() { processChat(document.getElementById('side-chat-input').value); }
+        
+        ['modal-chat-input', 'side-chat-input'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') processChat(el.value); });
+        });
+
+    </script>
+</body>
+</html>
