@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account - Karshaka Mitra</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #2A6547 0%, #1e4a33 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .signup-container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      overflow: hidden;
+      max-width: 900px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 560px;
+    }
+
+    .signup-visual {
+      background: linear-gradient(135deg, rgba(42, 101, 71, 0.92), rgba(30, 74, 51, 0.9)),
+                  url('Hello Farmers.jpg') center/cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      color: white;
+      text-align: center;
+    }
+
+    .visual-content h2 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+
+    .visual-content p {
+      font-size: 1.05rem;
+      opacity: 0.95;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .highlights {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      width: 100%;
+    }
+
+    .highlight {
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 14px 16px;
+      text-align: left;
+    }
+
+    .highlight-title {
+      font-weight: 800;
+      color: #F59E0B;
+      margin-bottom: 6px;
+      font-size: 1rem;
+    }
+
+    .highlight-desc {
+      font-size: 0.92rem;
+      opacity: 0.95;
+      line-height: 1.45;
+    }
+
+    .signup-form {
+      padding: 50px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo {
+      color: #2A6547;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .form-title {
+      color: #333;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .form-subtitle {
+      color: #666;
+      font-size: 1rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+      width: 100%;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background: #f8f9fa;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #2A6547;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(42, 101, 71, 0.1);
+    }
+
+    .password-wrap {
+      position: relative;
+    }
+
+    .toggle-visibility {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: #2A6547;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 6px 8px;
+      border-radius: 6px;
+    }
+
+    .toggle-visibility:hover {
+      background: rgba(42,101,71,0.08);
+    }
+
+    .password-meter {
+      height: 8px;
+      background: #e9ecef;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .password-meter > span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: #ef4444;
+      transition: width 0.3s ease, background 0.3s ease;
+    }
+
+    .help-text {
+      font-size: 12px;
+      color: #666;
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    .form-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 0 18px;
+      font-size: 14px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .terms {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .terms input[type="checkbox"] {
+      margin-top: 2px;
+      width: auto;
+    }
+
+    .submit-btn {
+      background: linear-gradient(135deg, #2A6547, #1e4a33);
+      color: white;
+      padding: 16px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 8px 0 16px;
+      width: 100%;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(42, 101, 71, 0.3);
+    }
+
+    .signin-link {
+      text-align: center;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .signin-link a {
+      color: #2A6547;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .signin-link a:hover {
+      text-decoration: underline;
+    }
+
+    .inline {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      color: #2A6547;
+      font-size: 14px;
+    }
+
+    .error {
+      color: #b91c1c;
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    .success {
+      color: #166534;
+      font-size: 14px;
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .signup-container {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+      }
+      .signup-visual {
+        order: 2;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+      .signup-form {
+        padding: 40px 28px;
+      }
+      .signup-visual {
+        padding: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <!-- Visual Side -->
+    <div class="signup-visual">
+      <div class="visual-content">
+        <h2>Join Karshaka Mitra</h2>
+        <p>Create an account to access AI-powered crop guidance, localized weather, and best practices across Kerala’s 14 districts.</p>
+        <div class="highlights">
+          <div class="highlight">
+            <div class="highlight-title">Localized Insights</div>
+            <div class="highlight-desc">District-wise recommendations for over 50 crops with seasonal advice.</div>
+          </div>
+          <div class="highlight">
+            <div class="highlight-title">24/7 Support</div>
+            <div class="highlight-desc">Always-on assistance for planning, pests, and irrigation.</div>
+          </div>
+          <div class="highlight">
+            <div class="highlight-title">Malayalam First</div>
+            <div class="highlight-desc">End-to-end Malayalam experience for clarity and ease.</div>
+          </div>
+          <div class="highlight">
+            <div class="highlight-title">Farmer Network</div>
+            <div class="highlight-desc">Connect and learn from peers across Kerala.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Side -->
+    <div class="signup-form">
+      <div class="form-header">
+        <div class="logo">Karshaka Mitra</div>
+        <h1 class="form-title">Create Account</h1>
+        <p class="form-subtitle">Start the smart farming journey</p>
+      </div>
+
+      <form id="signupForm" novalidate>
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" autocomplete="given-name" required>
+            <div class="error" id="firstNameErr"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" autocomplete="family-name" required>
+            <div class="error" id="lastNameErr"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" autocomplete="email" required>
+          <div class="error" id="emailErr"></div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="phone">Phone (India)</label>
+            <input type="tel" id="phone" name="phone" placeholder="+91 XXXXX XXXXX" autocomplete="tel" required>
+            <div class="error" id="phoneErr"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="district">District</label>
+            <select id="district" name="district" required>
+              <option value="">Select district</option>
+              <option>Trivandrum</option>
+              <option>Kollam</option>
+              <option>Pathanamthitta</option>
+              <option>Alappuzha</option>
+              <option>Kottayam</option>
+              <option>Idukki</option>
+              <option>Ernakulam</option>
+              <option>Thrissur</option>
+              <option>Palakkad</option>
+              <option>Malappuram</option>
+              <option>Kozhikode</option>
+              <option>Wayanad</option>
+              <option>Kannur</option>
+              <option>Kasaragod</option>
+            </select>
+            <div class="error" id="districtErr"></div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="password-wrap">
+              <input type="password" id="password" name="password" required aria-describedby="pwdHelp">
+              <button type="button" class="toggle-visibility" data-target="password">Show</button>
+            </div>
+            <div class="password-meter"><span id="pwdMeter"></span></div>
+            <div class="help-text" id="pwdHelp">Use 8+ characters with a mix of uppercase, lowercase, number, and symbol.</div>
+            <div class="error" id="passwordErr"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <div class="password-wrap">
+              <input type="password" id="confirmPassword" name="confirmPassword" required>
+              <button type="button" class="toggle-visibility" data-target="confirmPassword">Show</button>
+            </div>
+            <div class="error" id="confirmPasswordErr"></div>
+          </div>
+        </div>
+
+        <div class="form-options">
+          <div class="terms">
+            <input type="checkbox" id="agree" required>
+            <label for="agree">I agree to the Terms and Privacy Policy</label>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">Create Account</button>
+        <div class="success" id="formSuccess" style="display:none;">Account created successfully. Redirecting...</div>
+      </form>
+
+      <div class="signin-link">
+        Prefer continuing later? <a href="login.html">Back to LOG IN</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Utilities
+    const $ = (id) => document.getElementById(id);
+
+    // Toggle password visibility
+    document.querySelectorAll('.toggle-visibility').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = $(btn.dataset.target);
+        if (!target) return;
+        const isPwd = target.type === 'password';
+        target.type = isPwd ? 'text' : 'password';
+        btn.textContent = isPwd ? 'Hide' : 'Show';
+      });
+    });
+
+    // Password strength meter
+    function scorePassword(pwd) {
+      let score = 0;
+      if (!pwd) return 0;
+      const variations = {
+        digits: /\d/.test(pwd),
+        lower: /[a-z]/.test(pwd),
+        upper: /[A-Z]/.test(pwd),
+        symbols: /[^A-Za-z0-9]/.test(pwd)
+      };
+      const variationCount = Object.values(variations).filter(Boolean).length;
+      score += Math.min(10, Math.floor(pwd.length * 1.5));
+      score += variationCount * 10;
+      if (pwd.length >= 12) score += 10;
+      return Math.min(score, 100);
+    }
+
+    function updateMeter(val) {
+      const meter = $('pwdMeter');
+      const score = scorePassword(val);
+      meter.style.width = score + '%';
+      if (score < 35) meter.style.background = '#ef4444';
+      else if (score < 65) meter.style.background = '#f59e0b';
+      else meter.style.background = '#16a34a';
+    }
+
+    $('password').addEventListener('input', (e) => updateMeter(e.target.value));
+
+    // Basic validators
+    const validators = {
+      name: (v) => v && v.trim().length >= 2,
+      email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
+      phone: (v) => /^\+?91[\s-]?\d{5}[\s-]?\d{5}$|^[6-9]\d{9}$/.test(v),
+      district: (v) => !!v,
+      password: (v) => v.length >= 8 && /[a-z]/.test(v) && /[A-Z]/.test(v) && /\d/.test(v) && /[^A-Za-z0-9]/.test(v),
+      match: (a, b) => a === b
+    };
+
+    function setError(id, msg) {
+      const el = $(id);
+      if (el) el.textContent = msg || '';
+    }
+
+    // Persist remember-like experience for signup
+    const DRAFT_KEY = 'km_signup_draft_v1';
+    function saveDraft() {
+      const data = {
+        firstName: $('firstName').value,
+        lastName: $('lastName').value,
+        email: $('email').value,
+        phone: $('phone').value,
+        district: $('district').value
+      };
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+    }
+
+    function loadDraft() {
+      const raw = localStorage.getItem(DRAFT_KEY);
+      if (!raw) return;
+      try {
+        const d = JSON.parse(raw);
+        if (d.firstName) $('firstName').value = d.firstName;
+        if (d.lastName) $('lastName').value = d.lastName;
+        if (d.email) $('email').value = d.email;
+        if (d.phone) $('phone').value = d.phone;
+        if (d.district) $('district').value = d.district;
+      } catch {}
+    }
+
+    ['firstName','lastName','email','phone','district'].forEach(id => {
+      $(id).addEventListener('input', saveDraft);
+      $(id).addEventListener('change', saveDraft);
+    });
+    loadDraft();
+
+    // Submission
+    $('signupForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Clear errors
+      ['firstNameErr','lastNameErr','emailErr','phoneErr','districtErr','passwordErr','confirmPasswordErr']
+        .forEach(id => setError(id, ''));
+
+      const firstName = $('firstName').value.trim();
+      const lastName = $('lastName').value.trim();
+      const email = $('email').value.trim();
+      const phone = $('phone').value.trim();
+      const district = $('district').value;
+      const password = $('password').value;
+      const confirmPassword = $('confirmPassword').value;
+      const agree = $('agree').checked;
+
+      let ok = true;
+
+      if (!validators.name(firstName)) { setError('firstNameErr', 'Please enter a valid first name.'); ok = false; }
+      if (!validators.name(lastName)) { setError('lastNameErr', 'Please enter a valid last name.'); ok = false; }
+      if (!validators.email(email)) { setError('emailErr', 'Enter a valid email address.'); ok = false; }
+      if (!validators.phone(phone)) { setError('phoneErr', 'Enter a valid Indian phone number.'); ok = false; }
+      if (!validators.district(district)) { setError('districtErr', 'Select a district.'); ok = false; }
+      if (!validators.password(password)) { setError('passwordErr', 'Password must be 8+ chars with upper, lower, number, and symbol.'); ok = false; }
+      if (!validators.match(password, confirmPassword)) { setError('confirmPasswordErr', 'Passwords do not match.'); ok = false; }
+      if (!agree) { alert('Please agree to the Terms and Privacy Policy.'); ok = false; }
+
+      if (!ok) return;
+
+      // Simulate backend call (replace with real API)
+      const payload = { firstName, lastName, email, phone, district };
+      console.log('Signup payload:', payload);
+
+      // On success
+      localStorage.removeItem(DRAFT_KEY);
+      $('formSuccess').style.display = 'block';
+      setTimeout(() => {
+        // Redirect to dashboard or login after account creation
+        window.location.href = 'homepage.html';
+      }, 1200);
+    });
+  </script>
+</body>
+</html>

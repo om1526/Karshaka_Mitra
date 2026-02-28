@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Karshaka Mitra Activity Tracking</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam&family=Mulish:wght@700;900&family=Nunito:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --primary-orange-start: #ff9248;
+    --primary-orange-end: #ffb366;
+    --primary-orange-dark: #fb7a1e;
+    --primary-orange-light: #fff3e6;
+    --soft-white: #fdf6ee;
+    --text-dark: #3a2712;
+    --shadow-light: rgba(255, 146, 72, 0.2);
+    --shadow-dark: rgba(251, 122, 30, 0.35);
+    --shadow-glow: rgba(255, 175, 90, 0.6);
+    --radius-big: 32px;
+    --radius: 20px;
+    --gap: 32px;
+    --duration: 0.35s;
+  }
+  body {
+    margin: 0;
+    font-family: 'Nunito', 'Mulish', Arial, sans-serif;
+    background: linear-gradient(135deg, #fff9f2 0%, #ffd6aa 100%);
+    color: var(--text-dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  body.malayalam * {
+    font-family: 'Noto Sans Malayalam', serif !important;
+  }
+  header {
+    background: linear-gradient(90deg, var(--primary-orange-start), var(--primary-orange-end));
+    color: white;
+    font-family: 'Mulish', sans-serif;
+    font-weight: 900;
+    font-size: 2.6rem;
+    padding: 24px 30px;
+    text-align: center;
+    box-shadow: 0 2px 10px var(--shadow-dark);
+    user-select: none;
+    position: sticky;
+    top: 0;
+    z-index: 120;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+  header a {
+    color: #fff7ea;
+    background: rgba(255, 255, 255, 0.3);
+    padding: 12px 20px;
+    border-radius: var(--radius-big);
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-decoration: none;
+    box-shadow: 0 6px 18px rgba(255, 175, 115, 0.45);
+    backdrop-filter: saturate(180%) blur(16px);
+    transition: all 0.32s ease;
+  }
+  header a:hover,
+  header a:focus-visible {
+    background-color: #ffd6aa;
+    color: var(--primary-orange-dark);
+    box-shadow: 0 8px 32px #ffae4a77;
+    transform: scale(1.05);
+  }
+  #langToggle {
+    margin-left: auto;
+    background: var(--primary-orange-light);
+    border: none;
+    color: var(--primary-orange-dark);
+    font-weight: 700;
+    font-family: 'Mulish', sans-serif;
+    padding: 10px 18px;
+    border-radius: var(--radius-big);
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  #langToggle:hover {
+    background: #ffb96b;
+  }
+  main {
+    flex-grow: 1;
+    padding: 25px 48px 60px 48px;
+    max-width: 1140px;
+    margin: 0 auto 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+  }
+  .dashboard-summary {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .summary-card {
+    flex: 1 1 280px;
+    background: var(--primary-orange-light);
+    border-radius: var(--radius-big);
+    box-shadow:
+      5px 5px 15px #e2ba82,
+      -7px -7px 30px #fff8e9;
+    padding: 28px 38px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: 900;
+    color: var(--primary-orange-dark);
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    transition: box-shadow var(--duration);
+  }
+  .summary-card:hover {
+    box-shadow:
+      5px 5px 32px var(--shadow-glow),
+      -7px -7px 44px #fff4d3;
+  }
+  .summary-number {
+    font-size: 4.1rem;
+    font-family: 'Mulish', serif;
+    margin-bottom: 14px;
+    letter-spacing: 0.14em;
+    text-shadow: 0 3px 6px rgba(204,112,38,0.24);
+  }
+  .summary-label {
+    font-size: 1.4rem;
+    letter-spacing: 0.06em;
+  }
+  .filter-panel {
+    background: var(--soft-white);
+    box-shadow:
+      6px 6px 20px #ecd1a9,
+      -8px -8px 24px #fff9e0;
+    border-radius: var(--radius-big);
+    padding: 20px 30px;
+    display: flex;
+    gap: 26px;
+    flex-wrap: wrap;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 195px;
+    flex-grow: 1;
+    max-width: 300px;
+  }
+  .filter-group label {
+    font-weight: 700;
+    font-size: 1.11rem;
+    color: var(--primary-orange-dark);
+    margin-bottom: 10px;
+    letter-spacing: 0.03em;
+    user-select: none;
+  }
+  select {
+    padding: 13px 18px;
+    border-radius: var(--radius);
+    border: 2.5px solid var(--primary-orange);
+    font-size: 1.05rem;
+    font-family: inherit;
+    background: var(--primary-orange-light);
+    box-shadow:
+      inset 2px 3px 7px #ffd09e,
+      inset -2px -2px 6px #fff6df;
+    font-weight: 700;
+    transition: border-color var(--duration);
+    cursor: pointer;
+    letter-spacing: 0.02em;
+  }
+  select:focus {
+    outline-offset: 2px;
+    outline-color: var(--primary-orange-dark);
+    outline-style: solid;
+    outline-width: 2px;
+  }
+  .activity-list {
+    margin-top: 12px;
+    background: var(--soft-white);
+    box-shadow:
+      6px 8px 28px #ecd1a955,
+      -9px -9px 32px #fff7e1cc;
+    border-radius: var(--radius-big);
+    padding: 28px 32px 30px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-height: 420px;
+    overflow-y: auto;
+    color: #5a3f01;
+  }
+  .activity-item {
+    display: flex;
+    justify-content: space-between;
+    border-left: 8px solid var(--primary-orange);
+    border-radius: var(--radius);
+    background: #fff8e4;
+    padding: 18px 26px 18px 20px;
+    user-select: none;
+    box-shadow: 0 0 13px #ffb86b89;
+    cursor: pointer;
+    transition: background-color 0.28s ease, transform 0.15s ease;
+  }
+  .activity-item:hover {
+    background: var(--primary-orange-light);
+    transform: translateX(6px);
+    box-shadow: 0 9px 33px #ffb35aaf;
+  }
+  .item-left {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 66%;
+  }
+  .activity-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--primary-orange-dark);
+    letter-spacing: 0.03em;
+    filter: drop-shadow(0 1px 1.5px #bb7c24);
+  }
+  .activity-crop {
+    font-size: 1.03rem;
+    font-style: italic;
+    color: #6e4902;
+  }
+  .activity-desc {
+    font-size: 1rem;
+    margin-top: 4px;
+    letter-spacing: 0.025em;
+  }
+  .item-right {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .activity-date {
+    font-size: 0.96rem;
+    font-weight: 700;
+    color: #985e1f;
+    letter-spacing: 0.02em;
+  }
+  .activity-status {
+    font-weight: 900;
+    font-size: 0.91rem;
+    padding: 7px 22px;
+    border-radius: 22px;
+    color: white;
+    width: fit-content;
+    user-select: none;
+    filter: drop-shadow(0 1.4px 2px #804904cc);
+    letter-spacing: 0.04em;
+    text-shadow: 0 1px 2px #582a0b;
+  }
+  .planned {
+    background-color: #f3a650;
+  }
+  .in-progress {
+    background-color: #ff8600;
+  }
+  .completed {
+    background-color: #61ab47;
+  }
+  .progress-container {
+    --progress-color: var(--primary-orange-dark);
+    width: 84px;
+    height: 12px;
+    background: #f6dec0;
+    border-radius: 9px;
+    overflow: hidden;
+    margin-top: 12px;
+    box-shadow:
+      inset 1px 1px 2px #ffca80;
+  }
+  .progress-bar {
+    width: 0;
+    height: 100%;
+    background: var(--progress-color);
+    border-radius: 10px;
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: 0 0 10px var(--shadow-glow);
+  }
+  .add-activity-wrapper {
+    margin-top: var(--gap);
+    display: flex;
+    justify-content: flex-end;
+  }
+  button#addActivityBtn {
+    background: linear-gradient(135deg, var(--primary-orange-start), var(--primary-orange-end));
+    color: #4b2400;
+    padding: 18px 38px;
+    border-radius: var(--radius-big);
+    font-size: 1.28rem;
+    font-weight: 900;
+    cursor: pointer;
+    border: none;
+    filter: drop-shadow(0 1px 4px rgba(255,168,45,0.65));
+    box-shadow: inset 0 -4px 6px #ffbb66;
+    transition: all 0.32s ease;
+  }
+  button#addActivityBtn:hover {
+    filter: drop-shadow(0 2px 14px #ffcc8344);
+    transform: scale(1.06) rotate(-1deg);
+    background: linear-gradient(135deg, #ffb443, #ffd380);
+  }
+  .modal {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(251, 122, 30, 0.46);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 555;
+    backdrop-filter: blur(9px) saturate(120%);
+  }
+  .modal.active {
+    display: flex;
+  }
+  .modal-content {
+    background: var(--soft-white);
+    border-radius: var(--radius-big);
+    width: 400px;
+    padding: 32px 32px 38px;
+    box-shadow:
+      inset 0 4px 5px #fadba2,
+      0 12px 33px #b177210d;
+    max-height: 85vh;
+    overflow-y: auto;
+    font-family: 'Nunito', sans-serif;
+    color: var(--text-dark);
+    position: relative;
+  }
+  .modal-header {
+    font-size: 1.66rem;
+    font-weight: 900;
+    color: var(--primary-orange-dark);
+    margin-bottom: 26px;
+    user-select: none;
+    letter-spacing: 0.04em;
+  }
+  .modal-close {
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--primary-orange-dark);
+    border: none;
+    background: transparent;
+    filter: drop-shadow(0 0 2px #b17017);
+  }
+  .modal-field {
+    margin-bottom: 22px;
+  }
+  .modal-field label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 8px;
+    font-size: 1.06rem;
+    color: var(--primary-orange-dark);
+    letter-spacing: 0.01em;
+    user-select: none;
+  }
+  .modal-field input[type="text"],
+  .modal-field textarea,
+  .modal-field select,
+  .modal-field input[type="date"],
+  .modal-field input[type="time"] {
+    width: 100%;
+    padding: 13px 18px;
+    border-radius: var(--radius);
+    border: 2.5px solid var(--primary-orange);
+    font-size: 1.05rem;
+    font-family: inherit;
+    font-weight: 700;
+    background: var(--primary-orange-light);
+    box-shadow:
+      inset 2px 3px 7px #ffd09e,
+      inset -2px -2px 6px #fff6df;
+    transition: border-color var(--duration), box-shadow var(--duration);
+    cursor: text;
+  }
+  .modal-field input[type="text"]:focus,
+  .modal-field textarea:focus,
+  .modal-field select:focus,
+  .modal-field input[type="date"]:focus,
+  .modal-field input[type="time"]:focus {
+    outline: none;
+    border-color: var(--primary-orange-dark);
+    box-shadow:
+      0 0 12px var(--primary-orange-dark);
+  }
+  .modal-field textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  .modal-actions {
+    text-align: right;
+  }
+  .modal-actions button {
+    background-color: var(--primary-orange-dark);
+    color: white;
+    padding: 15px 32px;
+    border-radius: var(--radius-big);
+    font-weight: 900;
+    border: none;
+    cursor: pointer;
+    transition: box-shadow 0.35s ease;
+  }
+  .modal-actions button:hover {
+    box-shadow:
+      0 12px 38px rgba(255, 170, 60, 0.85);
+    background-color: #ffb843;
+    color: #4e2a00;
+    transform: scale(1.08);
+  }
+  @media (max-width: 900px){
+    main {
+      padding: 18px 24px 40px 24px;
+      max-width: 92vw;
+    }
+    .dashboard-summary {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 26px;
+    }
+    .summary-card {
+      max-width: 100%;
+    }
+    .activity-list {
+      max-height: 280px;
+    }
+    .modal-content {
+      width: 90vw;
+      height: auto;
+      max-height: 80vh;
+    }
+  }
+  @media (max-width: 520px){
+    main {
+      padding: 14px 16px 48px 16px;
+    }
+    .dashboard-summary {
+      grid-template-columns: 1fr;
+      gap: 22px;
+    }
+    .activity-list {
+      max-height: 220px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span id="headerText">Karshaka Mitra Activity Tracking</span>
+  <a href="javascript:void(0);" id="goBackBtn" aria-label="Back to AI assistant page">&larr; AI Assistant</a>
+  <button id="langToggle" aria-label="Toggle language">മലയാളം</button>
+</header>
+
+<main id="mainContent">
+  <section class="dashboard-summary" aria-label="Activity summary">
+    <article class="summary-card" role="region" aria-labelledby="plannedTasksTitle">
+      <div class="summary-number" id="plannedCount">0</div>
+      <div class="summary-label" id="plannedTasksTitle">Tasks Planned</div>
+    </article>
+    <article class="summary-card" role="region" aria-labelledby="completedTasksTitle">
+      <div class="summary-number" id="completedCount">0</div>
+      <div class="summary-label" id="completedTasksTitle">Tasks Completed</div>
+    </article>
+    <article class="summary-card" role="region" aria-labelledby="overdueTasksTitle">
+      <div class="summary-number" id="overdueCount">0</div>
+      <div class="summary-label" id="overdueTasksTitle">Tasks Overdue</div>
+    </article>
+  </section>
+
+  <section class="filter-panel" aria-label="Activity filters">
+    <div class="filter-group">
+      <label for="filterCrop" id="filterCropLabel">Crop</label>
+      <select id="filterCrop" aria-labelledby="filterCropLabel" aria-controls="activitiesList">
+        <option value="all">All Crops</option>
+        <option value="Rice">Rice</option>
+        <option value="Coconut">Coconut</option>
+        <option value="Cardamom">Cardamom</option>
+        <option value="Rubber">Rubber</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="filterType" id="filterTypeLabel">Activity Type</label>
+      <select id="filterType" aria-labelledby="filterTypeLabel" aria-controls="activitiesList">
+        <option value="all">All Types</option>
+        <option value="Planting">Planting</option>
+        <option value="Watering">Watering</option>
+        <option value="Fertilizing">Fertilizing</option>
+        <option value="Pest Control">Pest Control</option>
+        <option value="Harvesting">Harvesting</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="filterStatus" id="filterStatusLabel">Status</label>
+      <select id="filterStatus" aria-labelledby="filterStatusLabel" aria-controls="activitiesList">
+        <option value="all">All Statuses</option>
+        <option value="Planned">Planned</option>
+        <option value="In-progress">In-progress</option>
+        <option value="Completed">Completed</option>
+      </select>
+    </div>
+  </section>
+
+  <section class="activity-list" id="activitiesList" aria-label="List of activities"></section>
+
+  <div class="add-activity-wrapper">
+    <button id="addActivityBtn" aria-haspopup="dialog" aria-controls="activityModal" aria-expanded="false">+ Add Activity</button>
+  </div>
+</main>
+
+<div class="modal" id="activityModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1" aria-hidden="true">
+  <div class="modal-content">
+    <button class="modal-close" id="modalCloseBtn" aria-label="Close">&times;</button>
+    <h2 class="modal-header" id="modalTitle">Add New Activity</h2>
+    <form id="activityForm">
+      <div class="modal-field">
+        <label for="activityTitle" id="activityTitleLabel">Activity Title</label>
+        <input type="text" id="activityTitle" name="activityTitle" aria-labelledby="activityTitleLabel" required placeholder="e.g. Water rice field" />
+      </div>
+      <div class="modal-field">
+        <label for="activityCrop" id="activityCropLabel">Crop</label>
+        <select id="activityCrop" name="activityCrop" aria-labelledby="activityCropLabel" required>
+          <option value="" disabled selected>Select Crop</option>
+          <option value="Rice">Rice</option>
+          <option value="Coconut">Coconut</option>
+          <option value="Cardamom">Cardamom</option>
+          <option value="Rubber">Rubber</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label for="activityType" id="activityTypeLabel">Activity Type</label>
+        <select id="activityType" name="activityType" aria-labelledby="activityTypeLabel" required>
+          <option value="" disabled selected>Select Type</option>
+          <option value="Planting">Planting</option>
+          <option value="Watering">Watering</option>
+          <option value="Fertilizing">Fertilizing</option>
+          <option value="Pest Control">Pest Control</option>
+          <option value="Harvesting">Harvesting</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label for="activityDate" id="activityDateLabel">Date</label>
+        <input type="date" id="activityDate" name="activityDate" aria-labelledby="activityDateLabel" required />
+      </div>
+      <div class="modal-field">
+        <label for="activityTime" id="activityTimeLabel">Time</label>
+        <input type="time" id="activityTime" name="activityTime" aria-labelledby="activityTimeLabel" required />
+      </div>
+      <div class="modal-field">
+        <label for="activityStatus" id="activityStatusLabel">Status</label>
+        <select id="activityStatus" name="activityStatus" aria-labelledby="activityStatusLabel" required>
+          <option value="" disabled selected>Select Status</option>
+          <option value="Planned">Planned</option>
+          <option value="In-progress">In-progress</option>
+          <option value="Completed">Completed</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label for="activityDesc" id="activityDescLabel">Description (optional)</label>
+        <textarea id="activityDesc" name="activityDesc" aria-labelledby="activityDescLabel" placeholder="Additional notes or instructions"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="submit" id="saveActivityBtn">Save Activity</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const englishTexts = {
+      header: 'Karshaka Mitra Activity Tracking',
+      goBack: '← AI Assistant',
+      addActivity: '+ Add Activity',
+      summaryPlanned: 'Tasks Planned',
+      summaryCompleted: 'Tasks Completed',
+      summaryOverdue: 'Tasks Overdue',
+      filters: {
+        crop: 'Crop',
+        activityType: 'Activity Type',
+        status: 'Status',
+        allCrops: 'All Crops',
+        allTypes: 'All Types',
+        allStatuses: 'All Statuses',
+      },
+      modal: {
+        title: 'Add New Activity',
+        activityTitle: 'Activity Title',
+        activityTitlePlaceholder: 'e.g. Water rice field',
+        crop: 'Crop',
+        activityType: 'Activity Type',
+        date: 'Date',
+        time: 'Time',
+        status: 'Status',
+        description: 'Description (optional)',
+        save: 'Save Activity',
+      },
+      noActivitiesMsg: 'No activities match your filter',
+    };
+
+    const malayalamTexts = {
+      header: "കർഷകമിത്ര പ്രവർത്തനങ്ങൾ ട്രാക്കുചെയ്യൽ",
+      goBack: "← എ.ഐ. സഹായി",
+      addActivity: "+ പ്രവർത്തനം ചേർക്കുക",
+      summaryPlanned: "പണികൾ പദ്ധതിയിട്ടിരിക്കുന്നു",
+      summaryCompleted: "പണികൾ പൂർത്തിയായി",
+      summaryOverdue: "പഴകിയ പണികൾ",
+      filters: {
+        crop: "വളം",
+        activityType: "പ്രവർത്തന തരം",
+        status: "സ്ഥിതി",
+        allCrops: "എല്ലാ വിളകളും",
+        allTypes: "എല്ലാ തരം",
+        allStatuses: "എല്ലാ പ്രവർത്തനങ്ങളുമ്",
+      },
+      modal: {
+        title: "പുതിയത് പ്രവർത്തനം ചേർക്കുക",
+        activityTitle: "പ്രവർത്തനത്തിന്റെ പേര്",
+        activityTitlePlaceholder: "ഉദാ: പയ്യിപ്പ് തിരുകൽ",
+        crop: "വളം",
+        activityType: "പ്രവർത്തന തരം",
+        date: "തീയതി",
+        time: "സമയം",
+        status: "സ്ഥിതി",
+        description: "വിവരണം (ഐച്ഛികം)",
+        save: "സംരക്ഷിക്കുക",
+      },
+      noActivitiesMsg: "നിർദേശിച്ച ഫിൽട്ടറിന് അനുയോജ്യമായ പ്രവർത്തനങ്ങൾ ഇല്ല",
+    };
+
+    let currentLang = 'en';
+
+    const elements = {
+      headerText: document.getElementById('headerText'),
+      goBackBtn: document.getElementById('goBackBtn'),
+      langToggle: document.getElementById('langToggle'),
+      addActivityBtn: document.getElementById('addActivityBtn'),
+      plannedCountLabel: document.getElementById('plannedTasksTitle'),
+      completedCountLabel: document.getElementById('completedTasksTitle'),
+      overdueCountLabel: document.getElementById('overdueTasksTitle'),
+      filterCropLabel: document.getElementById('filterCropLabel'),
+      filterTypeLabel: document.getElementById('filterTypeLabel'),
+      filterStatusLabel: document.getElementById('filterStatusLabel'),
+      activityTitleLabel: document.getElementById('activityTitleLabel'),
+      activityTitleInput: document.getElementById('activityTitle'),
+      activityCropLabel: document.getElementById('activityCropLabel'),
+      activityTypeLabel: document.getElementById('activityTypeLabel'),
+      activityDateLabel: document.getElementById('activityDateLabel'),
+      activityTimeLabel: document.getElementById('activityTimeLabel'),
+      activityStatusLabel: document.getElementById('activityStatusLabel'),
+      activityDescLabel: document.getElementById('activityDescLabel'),
+      saveActivityBtn: document.getElementById('saveActivityBtn'),
+      modalTitle: document.getElementById('modalTitle'),
+      filterCropSelect: document.getElementById('filterCrop'),
+      filterTypeSelect: document.getElementById('filterType'),
+      filterStatusSelect: document.getElementById('filterStatus'),
+      activitiesList: document.getElementById('activitiesList'),
+      plannedCount: document.getElementById('plannedCount'),
+      completedCount: document.getElementById('completedCount'),
+      overdueCount: document.getElementById('overdueCount'),
+    };
+
+    function updateUIText() {
+      const langData = currentLang === 'ml' ? malayalamTexts : englishTexts;
+      document.body.classList.toggle('malayalam', currentLang === 'ml');
+
+      elements.headerText.textContent = langData.header;
+      elements.goBackBtn.textContent = langData.goBack;
+      elements.langToggle.textContent = currentLang === 'ml' ? 'English' : 'മലയാളം';
+      elements.addActivityBtn.textContent = langData.addActivity;
+
+      elements.plannedCountLabel.textContent = langData.summaryPlanned;
+      elements.completedCountLabel.textContent = langData.summaryCompleted;
+      elements.overdueCountLabel.textContent = langData.summaryOverdue;
+
+      elements.filterCropLabel.textContent = langData.filters.crop;
+      elements.filterTypeLabel.textContent = langData.filters.activityType;
+      elements.filterStatusLabel.textContent = langData.filters.status;
+
+      elements.filterCropSelect.options[0].text = langData.filters.allCrops;
+      elements.filterTypeSelect.options[0].text = langData.filters.allTypes;
+      elements.filterStatusSelect.options[0].text = langData.filters.allStatuses;
+
+      elements.activityTitleLabel.textContent = langData.modal.activityTitle;
+      elements.activityTitleInput.placeholder = langData.modal.activityTitlePlaceholder;
+      elements.activityCropLabel.textContent = langData.modal.crop;
+      elements.activityTypeLabel.textContent = langData.modal.activityType;
+      elements.activityDateLabel.textContent = langData.modal.date;
+      elements.activityTimeLabel.textContent = langData.modal.time;
+      elements.activityStatusLabel.textContent = langData.modal.status;
+      elements.activityDescLabel.textContent = langData.modal.description;
+      elements.saveActivityBtn.textContent = langData.modal.save;
+    }
+
+    function formatDate(dateStr) {
+      const d = new Date(dateStr);
+      if (isNaN(d)) return '';
+      return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+
+    function uniqueId() {
+      return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+    }
+
+    function isDateOverdue(dateStr, status) {
+      if (status === 'Completed' || !dateStr) return false;
+      const today = new Date().setHours(0, 0, 0, 0);
+      const activityDate = new Date(dateStr).setHours(0, 0, 0, 0);
+      return activityDate < today;
+    }
+
+    const activities = [];
+
+    function renderActivities() {
+      elements.activitiesList.innerHTML = '';
+      const fCrop = elements.filterCropSelect.value.toLowerCase();
+      const fType = elements.filterTypeSelect.value.toLowerCase();
+      const fStatus = elements.filterStatusSelect.value.toLowerCase();
+
+      const filtered = activities.filter(a =>
+        (fCrop === 'all' || a.crop.toLowerCase() === fCrop) &&
+        (fType === 'all' || a.type.toLowerCase() === fType) &&
+        (fStatus === 'all' || a.status.toLowerCase() === fStatus)
+      );
+
+      if (!filtered.length) {
+        const noMsg = document.createElement('p');
+        noMsg.textContent = currentLang === 'ml' ? malayalamTexts.noActivitiesMsg : englishTexts.noActivitiesMsg;
+        noMsg.style.color = '#a87020';
+        noMsg.style.fontWeight = '600';
+        noMsg.style.textAlign = 'center';
+        noMsg.style.padding = '48px 0';
+        elements.activitiesList.appendChild(noMsg);
+        return;
+      }
+
+      filtered.forEach((activity, i) => {
+        const item = document.createElement('div');
+        item.className = 'activity-item';
+        const left = document.createElement('div');
+        left.className = 'item-left';
+
+        const title = document.createElement('div');
+        title.className = 'activity-title';
+        title.textContent = activity.title;
+        left.appendChild(title);
+
+        const crop = document.createElement('div');
+        crop.className = 'activity-crop';
+        crop.textContent = currentLang === 'ml' ? `വളം: ${activity.crop}` : `Crop: ${activity.crop}`;
+        left.appendChild(crop);
+
+        if (activity.description) {
+          const desc = document.createElement('div');
+          desc.className = 'activity-desc';
+          desc.textContent = activity.description;
+          left.appendChild(desc);
+        }
+
+        const right = document.createElement('div');
+        right.className = 'item-right';
+
+        const date = document.createElement('div');
+        date.className = 'activity-date';
+        date.textContent = `${formatDate(activity.date)} ${activity.time || ''}`.trim();
+        right.appendChild(date);
+
+        const status = document.createElement('div');
+        status.className = 'activity-status ' + activity.status.toLowerCase().replace(/\s/g, '');
+        status.textContent = activity.status;
+        right.appendChild(status);
+
+        const progressContainer = document.createElement('div');
+        progressContainer.className = 'progress-container';
+        const progressBar = document.createElement('div');
+        progressBar.className = 'progress-bar';
+
+        let progressPercent = 10;
+        if (activity.status === 'Completed') progressPercent = 100;
+        else if (activity.status === 'In-progress') progressPercent = 55;
+        progressBar.style.width = progressPercent + '%';
+
+        progressContainer.appendChild(progressBar);
+        right.appendChild(progressContainer);
+
+        item.appendChild(left);
+        item.appendChild(right);
+
+        item.style.cursor = 'pointer';
+        item.title = currentLang === 'ml' ? 'ഈ പ്രവർത്തനം തിരുത്താൻ ക്ലിക് ചെയ്യുക' : 'Click to edit this activity';
+        item.addEventListener('click', () => {
+          const idx = activities.findIndex(a => a.id === activity.id);
+          openEditModal(idx);
+        });
+
+        elements.activitiesList.appendChild(item);
+      });
+      updateSummary();
+    }
+
+    function updateSummary() {
+      let planned = 0, completed = 0, overdue = 0;
+      activities.forEach(a => {
+        if (!a.status) return;
+        if (a.status === 'Completed') completed++;
+        else if (isDateOverdue(a.date, a.status)) overdue++;
+        else planned++;
+      });
+      elements.plannedCount.textContent = planned;
+      elements.completedCount.textContent = completed;
+      elements.overdueCount.textContent = overdue;
+    }
+
+    const activityModal = document.getElementById('activityModal');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+    const activityForm = document.getElementById('activityForm');
+    const addActivityBtn = document.getElementById('addActivityBtn');
+
+    let editIndex = -1;
+
+    function showModal() {
+      activityModal.classList.add('active');
+      activityModal.setAttribute('aria-hidden', 'false');
+      activityModal.focus();
+      addActivityBtn.setAttribute('aria-expanded', 'true');
+    }
+    function closeModal() {
+      activityModal.classList.remove('active');
+      activityModal.setAttribute('aria-hidden', 'true');
+      addActivityBtn.setAttribute('aria-expanded', 'false');
+      resetForm();
+    }
+    function resetForm() {
+      editIndex = -1;
+      activityForm.reset();
+      activityForm.activityStatus.value = 'Planned';
+    }
+    addActivityBtn.addEventListener('click', () => {
+      resetForm();
+      showModal();
+    });
+    modalCloseBtn.addEventListener('click', closeModal);
+    activityModal.addEventListener('click', (e) => {
+      if (e.target === activityModal) closeModal();
+    });
+
+    function openEditModal(index) {
+      editIndex = index;
+      const a = activities[index];
+      activityForm.activityTitle.value = a.title;
+      activityForm.activityCrop.value = a.crop;
+      activityForm.activityType.value = a.type;
+      activityForm.activityDate.value = a.date;
+      activityForm.activityTime.value = a.time || '';
+      activityForm.activityStatus.value = a.status;
+      activityForm.activityDesc.value = a.description || '';
+      showModal();
+    }
+
+    activityForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const newActivity = {
+        id: editIndex >= 0 ? activities[editIndex].id : uniqueId(),
+        title: activityForm.activityTitle.value.trim(),
+        crop: activityForm.activityCrop.value,
+        type: activityForm.activityType.value,
+        date: activityForm.activityDate.value,
+        time: activityForm.activityTime.value,
+        status: activityForm.activityStatus.value,
+        description: activityForm.activityDesc.value.trim(),
+      };
+      if (editIndex >= 0) activities[editIndex] = newActivity;
+      else activities.push(newActivity);
+      closeModal();
+      renderActivities();
+    });
+
+    elements.filterCropSelect.addEventListener('change', renderActivities);
+    elements.filterTypeSelect.addEventListener('change', renderActivities);
+    elements.filterStatusSelect.addEventListener('change', renderActivities);
+
+    elements.langToggle.addEventListener('click', () => {
+      currentLang = currentLang === 'en' ? 'ml' : 'en';
+      updateUIText();
+      renderActivities();
+    });
+
+    elements.goBackBtn.addEventListener('click', () => {
+      alert(currentLang === 'ml' ? "[translate:ഈ പേജ് AI അസിസ്റ്റന്റെ പേജിലേക്കു മടങ്ങും]" : "This would navigate back to the AI Assistant page.");
+    });
+
+    updateUIText();
+    renderActivities();
+  })();
+</script>
+
+</body>
+</html>
